@@ -3,6 +3,7 @@
 //   Created by Nikita Neverov at 18.01.2020 14:31
 #endregion
 
+
 #define SENSITIVE_DATA_LOGGING
 
 using System.Linq;
@@ -10,7 +11,6 @@ using System.Linq;
 using GeoIP.Server.Data;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,13 +21,13 @@ namespace GeoIP.Server
 {
     public sealed class Startup
     {
-        #region Constructors
-        public Startup(IConfiguration configuration) => Configuration = configuration;
+        #region Fields
+        private readonly IConfiguration _configuration;
         #endregion
 
 
-        #region Properties
-        public static IConfiguration Configuration { get; private set; }
+        #region Constructors
+        public Startup(IConfiguration configuration) => _configuration = configuration;
         #endregion
 
 
@@ -40,21 +40,23 @@ namespace GeoIP.Server
                                                                          new[] { "application/octet-stream" }))
                     .AddResponseCaching();
             #endregion
-            
+
+
             #region Commons
             services.AddControllers()
                     .AddNewtonsoftJson();
             #endregion
-            
+
+
             #region Contexts
             services.AddEntityFrameworkNpgsql()
                     .AddDbContext<GeoIpDbContext>(
                          options =>
                          {
                              options.UseNpgsql(
-                                 Configuration.GetConnectionString(@"Default"));
+                                 _configuration.GetConnectionString(@"Default"));
                              options.EnableServiceProviderCaching();
-                             
+
                              #if DEBUG || SENSITIVE_DATA_LOGGING
                              options.EnableSensitiveDataLogging();
                              #endif
@@ -63,7 +65,7 @@ namespace GeoIP.Server
         }
 
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseResponseCompression()
                .UseResponseCaching();

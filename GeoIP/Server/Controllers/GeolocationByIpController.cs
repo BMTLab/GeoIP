@@ -1,5 +1,5 @@
 ﻿#region HEADER
-//   WeatherForecastController.cs of GeoIP.Server
+//   GeolocationByIpController.cs of GeoIP.Server
 //   Created by Nikita Neverov at 18.01.2020 14:31
 #endregion
 
@@ -28,8 +28,8 @@ namespace GeoIP.Server.Controllers
             _logger = logger;
         }
         #endregion
-        
-        
+
+
         #region Methods.HTTP
         #endregion _Methods.HTTP
     }
