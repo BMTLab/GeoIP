@@ -3,12 +3,16 @@
 //   Created by Nikita Neverov at 18.01.2020 14:31
 #endregion
 
+#define SENSITIVE_DATA_LOGGING
 
 using System.Linq;
+
+using GeoIP.Server.Data;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -36,11 +40,25 @@ namespace GeoIP.Server
                                                                          new[] { "application/octet-stream" }))
                     .AddResponseCaching();
             #endregion
-
-
+            
             #region Commons
             services.AddControllers()
                     .AddNewtonsoftJson();
+            #endregion
+            
+            #region Contexts
+            services.AddEntityFrameworkNpgsql()
+                    .AddDbContext<GeoIpDbContext>(
+                         options =>
+                         {
+                             options.UseNpgsql(
+                                 Configuration.GetConnectionString(@"Default"));
+                             options.EnableServiceProviderCaching();
+                             
+                             #if DEBUG || SENSITIVE_DATA_LOGGING
+                             options.EnableSensitiveDataLogging();
+                             #endif
+                         });
             #endregion
         }
 
