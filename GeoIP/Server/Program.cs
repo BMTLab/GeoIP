@@ -52,7 +52,7 @@ namespace GeoIP.Server
                    .UseConfiguration(new ConfigurationBuilder()
                                     .AddCommandLine(args)
                                     .Build())
-                   .ConfigureAppConfiguration((hostingContext, config) =>
+                   .ConfigureAppConfiguration((_, config) =>
                     {
                         var path = string.Concat(Directory.GetCurrentDirectory(), @"/Properties/appSettings.json");
                         config.AddJsonFile(path, false, true);
