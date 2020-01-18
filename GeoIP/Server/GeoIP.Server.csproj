@@ -61,9 +61,5 @@
     <ProjectReference Include="..\Client\GeoIP.Client.csproj" />
     <ProjectReference Include="..\Shared\GeoIP.Shared.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data" />
-  </ItemGroup>
   
 </Project>
