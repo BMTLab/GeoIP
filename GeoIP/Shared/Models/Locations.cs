@@ -25,7 +25,7 @@ namespace GeoIP.Shared.Models
         public string? Subdivision2Name { get; set; }
         public string? CityName { get; set; }
         public short? MetroCode { get; set; }
-        public string TimeZone { get; set; }
+        public string? TimeZone { get; set; }
         public bool? IsInEuropeanUnion { get; set; }
 
         public virtual ICollection<Blocks>? Blocks { get; set; }

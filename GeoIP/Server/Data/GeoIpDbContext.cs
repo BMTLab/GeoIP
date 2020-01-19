@@ -6,6 +6,7 @@
 
 #define SENSITIVE_DATA_LOGGING
 
+using System;
 using System.IO;
 
 using GeoIP.Shared.Models;
@@ -18,11 +19,6 @@ namespace GeoIP.Server.Data
 {
     public sealed class GeoIpDbContext : DbContext
     {
-        #region Fields
-        private readonly IConfiguration _configuration;
-        #endregion
-
-
         #region Constructors
         public GeoIpDbContext()
         {
@@ -30,11 +26,9 @@ namespace GeoIP.Server.Data
         
         public GeoIpDbContext
         (
-            DbContextOptions options,
-            IConfiguration configuration
+            DbContextOptions options
         ) : base(options)
         {
-            _configuration = configuration;
         }
         #endregion
 
@@ -67,6 +61,9 @@ namespace GeoIP.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            if (modelBuilder == null)
+                throw new ArgumentNullException(nameof(modelBuilder), "EF Core error");
+            
             modelBuilder.Entity<Blocks>(entity =>
             {
                 entity.ToTable("blocks");
@@ -107,7 +104,7 @@ namespace GeoIP.Server.Data
                       .HasColumnName("represented_country_geoname_id");
 
                 entity.HasOne(d => d.Location)
-                      .WithMany(p => p.Blocks)
+                      .WithMany(p => p!.Blocks)
                       .HasForeignKey(d => d.GeonameId)
                       .HasConstraintName("blocks_geoname_id_fkey");
             });
