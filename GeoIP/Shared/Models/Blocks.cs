@@ -5,6 +5,8 @@
 
 
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
 
@@ -12,17 +14,19 @@ namespace GeoIP.Shared.Models
 {
     public class Blocks
     {
+        [Key]
         public ValueTuple<IPAddress, int> Network { get; set; }
-        public short? GeonameId { get; set; }
-        public short? RegisteredCountryGeonameId { get; set; }
-        public short? RepresentedCountryGeonameId { get; set; }
+        public int? GeonameId { get; set; }
+        public int? RegisteredCountryGeonameId { get; set; }
+        public int? RepresentedCountryGeonameId { get; set; }
         public bool? IsAnonymousProxy { get; set; }
         public bool? IsSatelliteProvider { get; set; }
-        public string PostalCode { get; set; }
+        public string? PostalCode { get; set; }
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set; }
         public short? AccuracyRadius { get; set; }
 
-        public virtual Locations Geoname { get; set; }
+        [ForeignKey("GeonameId")]
+        public virtual Locations? Location { get; set; }
     }
 }

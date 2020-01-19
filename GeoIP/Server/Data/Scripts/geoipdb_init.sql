@@ -2,7 +2,7 @@
 
 create table if not exists locations
 (
-    geoname_id	            smallint primary key,
+    geoname_id	            integer primary key,
     locale_code	            varchar(2),
     continent_code	        varchar(2),
     continent_name	        text,
@@ -21,9 +21,9 @@ create table if not exists locations
 create table if not exists blocks
 (
     network                         cidr primary key,
-    geoname_id                      smallint references locations,
-    registered_country_geoname_id	smallint,
-    represented_country_geoname_id	smallint,
+    geoname_id                      integer references locations,
+    registered_country_geoname_id	integer,
+    represented_country_geoname_id	integer,
     is_anonymous_proxy	            boolean,
     is_satellite_provider	        boolean,
     postal_code	                    text,

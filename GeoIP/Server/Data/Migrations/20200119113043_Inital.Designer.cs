@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GeoIP.Server.Data.Migrations
 {
     [DbContext(typeof(GeoIpDbContext))]
-    [Migration("20200118221423_Inital")]
+    [Migration("20200119113043_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,10 +32,9 @@ namespace GeoIP.Server.Data.Migrations
                         .HasColumnName("accuracy_radius")
                         .HasColumnType("smallint");
 
-                    b.Property<short?>("GeonameId")
-                        .IsRequired()
+                    b.Property<int?>("GeonameId")
                         .HasColumnName("geoname_id")
-                        .HasColumnType("smallint");
+                        .HasColumnType("integer");
 
                     b.Property<bool?>("IsAnonymousProxy")
                         .HasColumnName("is_anonymous_proxy")
@@ -54,17 +53,16 @@ namespace GeoIP.Server.Data.Migrations
                         .HasColumnType("numeric(7,4)");
 
                     b.Property<string>("PostalCode")
-                        .IsRequired()
                         .HasColumnName("postal_code")
                         .HasColumnType("text");
 
-                    b.Property<short?>("RegisteredCountryGeonameId")
+                    b.Property<int?>("RegisteredCountryGeonameId")
                         .HasColumnName("registered_country_geoname_id")
-                        .HasColumnType("smallint");
+                        .HasColumnType("integer");
 
-                    b.Property<short?>("RepresentedCountryGeonameId")
+                    b.Property<int?>("RepresentedCountryGeonameId")
                         .HasColumnName("represented_country_geoname_id")
-                        .HasColumnType("smallint");
+                        .HasColumnType("integer");
 
                     b.HasKey("Network")
                         .HasName("blocks_pkey");
@@ -76,34 +74,29 @@ namespace GeoIP.Server.Data.Migrations
 
             modelBuilder.Entity("GeoIP.Shared.Models.Locations", b =>
                 {
-                    b.Property<short>("GeonameId")
+                    b.Property<int?>("GeonameId")
                         .HasColumnName("geoname_id")
-                        .HasColumnType("smallint");
+                        .HasColumnType("integer");
 
                     b.Property<string>("CityName")
-                        .IsRequired()
                         .HasColumnName("city_name")
                         .HasColumnType("text");
 
                     b.Property<string>("ContinentCode")
-                        .IsRequired()
                         .HasColumnName("continent_code")
                         .HasColumnType("character varying(2)")
                         .HasMaxLength(2);
 
                     b.Property<string>("ContinentName")
-                        .IsRequired()
                         .HasColumnName("continent_name")
                         .HasColumnType("text");
 
                     b.Property<string>("CountryIsoCode")
-                        .IsRequired()
                         .HasColumnName("country_iso_code")
                         .HasColumnType("character varying(2)")
                         .HasMaxLength(2);
 
                     b.Property<string>("CountryName")
-                        .IsRequired()
                         .HasColumnName("country_name")
                         .HasColumnType("text");
 
@@ -112,7 +105,6 @@ namespace GeoIP.Server.Data.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("LocaleCode")
-                        .IsRequired()
                         .HasColumnName("locale_code")
                         .HasColumnType("character varying(2)")
                         .HasMaxLength(2);
@@ -122,24 +114,20 @@ namespace GeoIP.Server.Data.Migrations
                         .HasColumnType("smallint");
 
                     b.Property<string>("Subdivision1IsoCode")
-                        .IsRequired()
                         .HasColumnName("subdivision_1_iso_code")
                         .HasColumnType("character varying(3)")
                         .HasMaxLength(3);
 
                     b.Property<string>("Subdivision1Name")
-                        .IsRequired()
                         .HasColumnName("subdivision_1_name")
                         .HasColumnType("text");
 
                     b.Property<string>("Subdivision2IsoCode")
-                        .IsRequired()
                         .HasColumnName("subdivision_2_iso_code")
                         .HasColumnType("character varying(3)")
                         .HasMaxLength(3);
 
                     b.Property<string>("Subdivision2Name")
-                        .IsRequired()
                         .HasColumnName("subdivision_2_name")
                         .HasColumnType("text");
 
@@ -156,12 +144,10 @@ namespace GeoIP.Server.Data.Migrations
 
             modelBuilder.Entity("GeoIP.Shared.Models.Blocks", b =>
                 {
-                    b.HasOne("GeoIP.Shared.Models.Locations", "Geoname")
+                    b.HasOne("GeoIP.Shared.Models.Locations", "Location")
                         .WithMany("Blocks")
                         .HasForeignKey("GeonameId")
-                        .HasConstraintName("blocks_geoname_id_fkey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasConstraintName("blocks_geoname_id_fkey");
                 });
 #pragma warning restore 612, 618
         }

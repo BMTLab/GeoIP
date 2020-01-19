@@ -6,6 +6,8 @@
 
 #define SENSITIVE_DATA_LOGGING
 
+using System.IO;
+
 using GeoIP.Shared.Models;
 
 using Microsoft.EntityFrameworkCore;
@@ -25,8 +27,7 @@ namespace GeoIP.Server.Data
         public GeoIpDbContext()
         {
         }
-
-
+        
         public GeoIpDbContext
         (
             DbContextOptions options,
@@ -49,9 +50,14 @@ namespace GeoIP.Server.Data
         {
             if (optionsBuilder is null || optionsBuilder.IsConfigured)
                 return;
-
-            var connectionString = _configuration.GetConnectionString(@"Default");
-            optionsBuilder.UseNpgsql(connectionString);
+            
+            var connection = new ConfigurationBuilder()
+                            .SetBasePath(Directory.GetCurrentDirectory())
+                            .AddJsonFile(@"Properties/appSettings.json")
+                            .Build()
+                            .GetConnectionString(@"Default");
+            
+            optionsBuilder.UseNpgsql(connection);
 
             #if DEBUG || SENSITIVE_DATA_LOGGING
             optionsBuilder.EnableSensitiveDataLogging();
@@ -63,10 +69,10 @@ namespace GeoIP.Server.Data
         {
             modelBuilder.Entity<Blocks>(entity =>
             {
+                entity.ToTable("blocks");
+                
                 entity.HasKey(e => e.Network)
                       .HasName("blocks_pkey");
-
-                entity.ToTable("blocks");
 
                 entity.Property(e => e.Network)
                       .HasColumnName("network");
@@ -100,7 +106,7 @@ namespace GeoIP.Server.Data
                 entity.Property(e => e.RepresentedCountryGeonameId)
                       .HasColumnName("represented_country_geoname_id");
 
-                entity.HasOne(d => d.Geoname)
+                entity.HasOne(d => d.Location)
                       .WithMany(p => p.Blocks)
                       .HasForeignKey(d => d.GeonameId)
                       .HasConstraintName("blocks_geoname_id_fkey");
@@ -108,10 +114,10 @@ namespace GeoIP.Server.Data
 
             modelBuilder.Entity<Locations>(entity =>
             {
+                entity.ToTable("locations");
+                
                 entity.HasKey(e => e.GeonameId)
                       .HasName("locations_pkey");
-
-                entity.ToTable("locations");
 
                 entity.Property(e => e.GeonameId)
                       .HasColumnName("geoname_id")
