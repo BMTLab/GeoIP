@@ -60,6 +60,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Client\GeoIP.Client.csproj" />
     <ProjectReference Include="..\Shared\GeoIP.Shared.csproj" />
+    <ProjectReference Include="..\Updater\GeoIP.Updater.csproj" />
   </ItemGroup>
   
 </Project>
