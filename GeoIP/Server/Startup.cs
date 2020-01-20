@@ -38,12 +38,11 @@ namespace GeoIP.Server
         {
             #region Caches, Compressions
             services.AddResponseCompression(
-                         opts => 
+                         opts =>
                              opts.MimeTypes = ResponseCompressionDefaults
                                              .MimeTypes.Concat(new[] { "application/octet-stream" }))
                     .AddResponseCaching()
                     .AddMemoryCache();
-
             #endregion
 
 
@@ -57,8 +56,7 @@ namespace GeoIP.Server
             services.AddDbContextPool<GeoIpDbContext>(
                 options =>
                 {
-                    options.UseNpgsql(
-                        _configuration.GetConnectionString(@"Default"));
+                    options.UseNpgsql(_configuration.GetConnectionString(@"Default"));
                     options.EnableServiceProviderCaching();
 
                     #if DEBUG || SENSITIVE_DATA_LOGGING
@@ -66,7 +64,8 @@ namespace GeoIP.Server
                     #endif
                 });
             #endregion
-            
+
+
             services.AddGeoIpProvider();
         }
 
