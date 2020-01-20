@@ -14,8 +14,8 @@ namespace GeoIP.Server.Services.DataProviders
     public interface IGeoIpProvider
     {
         #region Methods
-        Blocks GetAllInfoByIp(string ip);
-        Task<Blocks> GetAllInfoByIpAsync(string ip);
+        Block? GetAllInfoByIp(string ip);
+        Task<Block?> GetAllInfoByIpAsync(string ip);
         #endregion
     }
 }

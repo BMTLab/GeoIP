@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GeoIP.Shared.Models
 {
-    public class Locations
+    public class Location
     {
         [Key]
         public int? GeonameId { get; set; }
@@ -29,6 +29,6 @@ namespace GeoIP.Shared.Models
         public string? TimeZone { get; set; }
         public bool? IsInEuropeanUnion { get; set; }
 
-        public virtual ICollection<Blocks>? Blocks { get; set; }
+        public virtual ICollection<Block>? Blocks { get; set; }
     }
 }

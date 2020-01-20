@@ -26,12 +26,12 @@ namespace GeoIP.Server.Services.DataProviders
 
 
         #region Fields
-        private static readonly Func<GeoIpDbContext, string, Blocks> GetAllInfoByIpFunc =
+        private static readonly Func<GeoIpDbContext, string, Block> GetAllInfoByIpFunc =
             (db, ip) => db.Blocks
                           .FromSqlRaw($"select * from geoipdb.public.blocks where '{ip}' <<= network")
                           .Include(p => p.Location)
                           .AsNoTracking()
-                          .First();
+                          .FirstOrDefault();
 
         private readonly GeoIpDbContext _db;
         private readonly IMemoryCache _cache;
@@ -60,16 +60,16 @@ namespace GeoIP.Server.Services.DataProviders
 
 
         #region Methods
-        public Blocks GetAllInfoByIp(string ip)
+        public Block? GetAllInfoByIp(string ip)
         {
-            if (_cache.TryGetValue(ip, out Blocks block))
+            if (_cache.TryGetValue(ip, out Block block))
             {
                 _logger.LogTrace("IP request loaded from cache");
 
                 goto Out;
             }
 
-            block = GetAllInfoByIpFunc(_db, ip);
+            block = GetAllInfoByIpFunc(_db, ip)!;
 
             if (block != null)
             {
@@ -83,7 +83,7 @@ namespace GeoIP.Server.Services.DataProviders
         }
 
 
-        public async Task<Blocks> GetAllInfoByIpAsync
+        public async Task<Block?> GetAllInfoByIpAsync
             (string ip) =>
             await Task.Run(() => GetAllInfoByIp(ip)).ConfigureAwait(false);
         #endregion _Methods

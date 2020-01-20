@@ -12,7 +12,7 @@ using System.Net;
 
 namespace GeoIP.Shared.Models
 {
-    public class Blocks
+    public class Block
     {
         [Key]
         public ValueTuple<IPAddress, int> Network { get; set; }
@@ -28,6 +28,6 @@ namespace GeoIP.Shared.Models
         public short? AccuracyRadius { get; set; }
 
         [ForeignKey("GeonameId")]
-        public virtual Locations? Location { get; set; }
+        public virtual Location? Location { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿#region HEADER
-//   20200119113043_Inital.cs of GeoIP.Server
-//   Created by Nikita Neverov at 19.01.2020 14:30
+//   20200120103457_Inital.cs of GeoIP.Server
+//   Created by Nikita Neverov at 20.01.2020 13:34
 #endregion
 
 
@@ -32,7 +32,7 @@ namespace GeoIP.Server.Data.Migrations
                     subdivision_2_name = table.Column<string>(nullable: true),
                     city_name = table.Column<string>(nullable: true),
                     metro_code = table.Column<short>(nullable: true),
-                    time_zone = table.Column<string>(),
+                    time_zone = table.Column<string>(nullable: true),
                     is_in_european_union = table.Column<bool>(nullable: true)
                 },
                 constraints: table => { table.PrimaryKey("locations_pkey", x => x.geoname_id); });

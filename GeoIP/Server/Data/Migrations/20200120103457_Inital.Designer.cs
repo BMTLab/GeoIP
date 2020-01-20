@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GeoIP.Server.Data.Migrations
 {
     [DbContext(typeof(GeoIpDbContext))]
-    [Migration("20200119113043_Inital")]
+    [Migration("20200120103457_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace GeoIP.Server.Data.Migrations
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("GeoIP.Shared.Models.Blocks", b =>
+            modelBuilder.Entity("GeoIP.Shared.Models.Block", b =>
                 {
                     b.Property<ValueTuple<IPAddress, int>>("Network")
                         .HasColumnName("network")
@@ -72,7 +72,7 @@ namespace GeoIP.Server.Data.Migrations
                     b.ToTable("blocks");
                 });
 
-            modelBuilder.Entity("GeoIP.Shared.Models.Locations", b =>
+            modelBuilder.Entity("GeoIP.Shared.Models.Location", b =>
                 {
                     b.Property<int?>("GeonameId")
                         .HasColumnName("geoname_id")
@@ -132,7 +132,6 @@ namespace GeoIP.Server.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("TimeZone")
-                        .IsRequired()
                         .HasColumnName("time_zone")
                         .HasColumnType("text");
 
@@ -142,9 +141,9 @@ namespace GeoIP.Server.Data.Migrations
                     b.ToTable("locations");
                 });
 
-            modelBuilder.Entity("GeoIP.Shared.Models.Blocks", b =>
+            modelBuilder.Entity("GeoIP.Shared.Models.Block", b =>
                 {
-                    b.HasOne("GeoIP.Shared.Models.Locations", "Location")
+                    b.HasOne("GeoIP.Shared.Models.Location", "Location")
                         .WithMany("Blocks")
                         .HasForeignKey("GeonameId")
                         .HasConstraintName("blocks_geoname_id_fkey");

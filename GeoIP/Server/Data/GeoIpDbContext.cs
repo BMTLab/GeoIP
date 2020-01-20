@@ -22,7 +22,7 @@ namespace GeoIP.Server.Data
         #region Constructors
         public GeoIpDbContext
         (
-            DbContextOptions options
+            DbContextOptions options = null
         ) : base(options)
         {
         }
@@ -30,8 +30,8 @@ namespace GeoIP.Server.Data
 
 
         #region Properties.DbSets
-        public DbSet<Blocks>? Blocks { get; set; }
-        public DbSet<Locations>? Locations { get; set; }
+        public DbSet<Block>? Blocks { get; set; }
+        public DbSet<Location>? Locations { get; set; }
         #endregion
 
 
@@ -60,7 +60,7 @@ namespace GeoIP.Server.Data
             if (modelBuilder == null)
                 throw new ArgumentNullException(nameof(modelBuilder), "EF Core error");
 
-            modelBuilder.Entity<Blocks>(entity =>
+            modelBuilder.Entity<Block>(entity =>
             {
                 entity.ToTable("blocks");
 
@@ -105,7 +105,7 @@ namespace GeoIP.Server.Data
                       .HasConstraintName("blocks_geoname_id_fkey");
             });
 
-            modelBuilder.Entity<Locations>(entity =>
+            modelBuilder.Entity<Location>(entity =>
             {
                 entity.ToTable("locations");
 

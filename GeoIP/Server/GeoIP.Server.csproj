@@ -63,6 +63,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Data\Migrations" />
     <Folder Include="Services\DataProviders" />
     <Folder Include="Services\Extensions" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿#region HEADER
 //   GeoIpDbContextModelSnapshot.cs of GeoIP.Server
-//   Created by Nikita Neverov at 19.01.2020 14:30
+//   Created by Nikita Neverov at 20.01.2020 13:34
 #endregion
 
 
@@ -26,7 +26,7 @@ namespace GeoIP.Server.Data.Migrations
                .HasAnnotation("ProductVersion", "3.1.1")
                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("GeoIP.Shared.Models.Blocks", b =>
+            modelBuilder.Entity("GeoIP.Shared.Models.Block", b =>
             {
                 b.Property<ValueTuple<IPAddress, int>>("Network")
                  .HasColumnName("network")
@@ -76,7 +76,7 @@ namespace GeoIP.Server.Data.Migrations
                 b.ToTable("blocks");
             });
 
-            modelBuilder.Entity("GeoIP.Shared.Models.Locations", b =>
+            modelBuilder.Entity("GeoIP.Shared.Models.Location", b =>
             {
                 b.Property<int?>("GeonameId")
                  .HasColumnName("geoname_id")
@@ -136,7 +136,6 @@ namespace GeoIP.Server.Data.Migrations
                  .HasColumnType("text");
 
                 b.Property<string>("TimeZone")
-                 .IsRequired()
                  .HasColumnName("time_zone")
                  .HasColumnType("text");
 
@@ -146,9 +145,9 @@ namespace GeoIP.Server.Data.Migrations
                 b.ToTable("locations");
             });
 
-            modelBuilder.Entity("GeoIP.Shared.Models.Blocks", b =>
+            modelBuilder.Entity("GeoIP.Shared.Models.Block", b =>
             {
-                b.HasOne("GeoIP.Shared.Models.Locations", "Location")
+                b.HasOne("GeoIP.Shared.Models.Location", "Location")
                  .WithMany("Blocks")
                  .HasForeignKey("GeonameId")
                  .HasConstraintName("blocks_geoname_id_fkey");
