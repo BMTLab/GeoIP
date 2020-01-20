@@ -69,7 +69,7 @@ namespace GeoIP.Server.Services.DataProviders
                 goto Out;
             }
 
-            block = GetAllInfoByIpFunc(_db, ip)!;
+            block = GetAllInfoByIpFunc(_db, ip);
 
             if (block != null)
             {

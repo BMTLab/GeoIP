@@ -8,13 +8,16 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
+using System.Runtime.Serialization;
 
 
 namespace GeoIP.Shared.Models
 {
+    [Serializable]
     public class Block
     {
         [Key]
+        [IgnoreDataMember]
         public ValueTuple<IPAddress, int> Network { get; set; }
 
         public int? GeonameId { get; set; }

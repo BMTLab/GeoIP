@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 
 namespace GeoIP.Server
@@ -70,20 +71,23 @@ namespace GeoIP.Server
         }
 
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage()
+                   .UseBlazorDebugging();
+            }
+            
             app.UseResponseCompression()
                .UseResponseCaching();
-
-            app.UseDeveloperExceptionPage()
-               .UseBlazorDebugging();
-
+            
             app.UseStaticFiles(new StaticFileOptions
             {
                 OnPrepareResponse = ctx =>
                     ctx.Context.Response.Headers.Add("Cache-Control", "public,max-age=1200")
-            });
-            app.UseClientSideBlazorFiles<Client.Startup>();
+            })
+               .UseClientSideBlazorFiles<Client.Startup>();
 
             app.UseRouting()
                .UseEndpoints(endpoints =>

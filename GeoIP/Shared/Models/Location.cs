@@ -4,12 +4,15 @@
 #endregion
 
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 
 namespace GeoIP.Shared.Models
 {
+    [Serializable]
     public class Location
     {
         [Key]
@@ -29,6 +32,7 @@ namespace GeoIP.Shared.Models
         public string? TimeZone { get; set; }
         public bool? IsInEuropeanUnion { get; set; }
 
+        [IgnoreDataMember]
         public virtual ICollection<Block>? Blocks { get; set; }
     }
 }
