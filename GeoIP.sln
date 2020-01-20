@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29521.150
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoIP.Server", "GeoIP\Server\GeoIP.Server.csproj", "{ECDC2350-F321-46EF-8600-F1E4D2508343}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoIP.Server", "GeoIP\Server\GeoIP.Server.csproj", "{ECDC2350-F321-46EF-8600-F1E4D2508343}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoIP.Client", "GeoIP\Client\GeoIP.Client.csproj", "{3279E2E7-3106-4423-A75D-B99AA52EAB05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoIP.Client", "GeoIP\Client\GeoIP.Client.csproj", "{3279E2E7-3106-4423-A75D-B99AA52EAB05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoIP.Shared", "GeoIP\Shared\GeoIP.Shared.csproj", "{0FC398E1-C410-4058-9A82-D9AC4EBBC80F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoIP.Shared", "GeoIP\Shared\GeoIP.Shared.csproj", "{0FC398E1-C410-4058-9A82-D9AC4EBBC80F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E2D585FB-7862-4DDD-BF5C-80FF00BB7609}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoIP.Updater", "GeoIP\Updater\GeoIP.Updater.csproj", "{9EF04209-DAE2-431B-A0C3-FC8BA3BA5AD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoIP.Updater", "GeoIP\Updater\GeoIP.Updater.csproj", "{9EF04209-DAE2-431B-A0C3-FC8BA3BA5AD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
+    <IsPackable>true</IsPackable>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
 
@@ -60,6 +61,7 @@
     <ProjectReference Include="..\Client\GeoIP.Client.csproj" />
     <ProjectReference Include="..\Shared\GeoIP.Shared.csproj" />
     <ProjectReference Include="..\Updater\GeoIP.Updater.csproj" />
+    
   </ItemGroup>
 
   <ItemGroup>
@@ -67,5 +69,13 @@
     <Folder Include="Services\DataProviders" />
     <Folder Include="Services\Extensions" />
   </ItemGroup>
-  
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="cd $(OutDir)&#xD;&#xA;copy $(ProjectName).runtimeconfig.json GeoIp.Updater.runtimeconfig.json" />
+  </Target>
+
+  <Target Name="PostPublish" AfterTargets="Publish">
+    <Exec Command="cd $(PublishDir)&#xD;&#xA;copy $(ProjectName).runtimeconfig.json GeoIp.Updater.runtimeconfig.json" />
+  </Target>
+
 </Project>
