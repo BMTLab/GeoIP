@@ -13,9 +13,13 @@ namespace GeoIP.Updater
 {
     public static class Loader
     {
+        #region Fields.Handlers
         public static AsyncCompletedEventHandler? DownloadResultHandler;
         public static DownloadProgressChangedEventHandler? DownloadProgressHandler;
+        #endregion
         
+        
+        #region Methods
         public static async Task LoadAsync(string sourceUrl, string destinationPath)
         {
             var webClient = new WebClient();
@@ -25,5 +29,6 @@ namespace GeoIP.Updater
             
             await webClient.DownloadFileTaskAsync(sourceUrl, destinationPath);
         }
+        #endregion
     }
 }
