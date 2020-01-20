@@ -1,6 +1,6 @@
 ﻿#region HEADER
 //   Loader.cs of GeoIP.Updater
-//   Created by Nikita Neverov at 19.01.2020 17:25
+//   Created by Nikita Neverov at 20.01.2020 8:11
 #endregion
 
 
@@ -26,7 +26,7 @@ namespace GeoIP.Updater
 
             webClient.DownloadFileCompleted += DownloadResultHandler;
             webClient.DownloadProgressChanged += DownloadProgressHandler;
-            
+
             await webClient.DownloadFileTaskAsync(sourceUrl, destinationPath);
         }
         #endregion

@@ -1,6 +1,6 @@
 ﻿#region HEADER
 //   Program.cs of GeoIP.Updater
-//   Created by Nikita Neverov at 19.01.2020 17:02
+//   Created by Nikita Neverov at 20.01.2020 8:11
 #endregion
 
 

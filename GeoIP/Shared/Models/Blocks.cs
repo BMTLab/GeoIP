@@ -16,6 +16,7 @@ namespace GeoIP.Shared.Models
     {
         [Key]
         public ValueTuple<IPAddress, int> Network { get; set; }
+
         public int? GeonameId { get; set; }
         public int? RegisteredCountryGeonameId { get; set; }
         public int? RepresentedCountryGeonameId { get; set; }

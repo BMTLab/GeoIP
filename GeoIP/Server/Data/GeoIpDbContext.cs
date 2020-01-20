@@ -1,6 +1,6 @@
 ﻿#region HEADER
 //   GeoIpDbContext.cs of GeoIP.Server
-//   Created by Nikita Neverov at 19.01.2020 1:14
+//   Created by Nikita Neverov at 19.01.2020 17:02
 #endregion
 
 
@@ -20,10 +20,6 @@ namespace GeoIP.Server.Data
     public sealed class GeoIpDbContext : DbContext
     {
         #region Constructors
-        public GeoIpDbContext()
-        {
-        }
-        
         public GeoIpDbContext
         (
             DbContextOptions options
@@ -44,13 +40,13 @@ namespace GeoIP.Server.Data
         {
             if (optionsBuilder is null || optionsBuilder.IsConfigured)
                 return;
-            
+
             var connection = new ConfigurationBuilder()
                             .SetBasePath(Directory.GetCurrentDirectory())
                             .AddJsonFile(@"Properties/appSettings.json")
                             .Build()
                             .GetConnectionString(@"Default");
-            
+
             optionsBuilder.UseNpgsql(connection);
 
             #if DEBUG || SENSITIVE_DATA_LOGGING
@@ -63,11 +59,11 @@ namespace GeoIP.Server.Data
         {
             if (modelBuilder == null)
                 throw new ArgumentNullException(nameof(modelBuilder), "EF Core error");
-            
+
             modelBuilder.Entity<Blocks>(entity =>
             {
                 entity.ToTable("blocks");
-                
+
                 entity.HasKey(e => e.Network)
                       .HasName("blocks_pkey");
 
@@ -112,7 +108,7 @@ namespace GeoIP.Server.Data
             modelBuilder.Entity<Locations>(entity =>
             {
                 entity.ToTable("locations");
-                
+
                 entity.HasKey(e => e.GeonameId)
                       .HasName("locations_pkey");
 

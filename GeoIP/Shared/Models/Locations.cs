@@ -1,6 +1,6 @@
 ﻿#region HEADER
 //   Locations.cs of GeoIP.Shared
-//   Created by Nikita Neverov at 19.01.2020 0:12
+//   Created by Nikita Neverov at 19.01.2020 17:02
 #endregion
 
 
@@ -14,6 +14,7 @@ namespace GeoIP.Shared.Models
     {
         [Key]
         public int? GeonameId { get; set; }
+
         public string? LocaleCode { get; set; }
         public string? ContinentCode { get; set; }
         public string? ContinentName { get; set; }
