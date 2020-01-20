@@ -9,6 +9,8 @@
 using System.Linq;
 
 using GeoIP.Server.Data;
+using GeoIP.Server.Filters;
+using GeoIP.Server.Services.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -35,33 +37,37 @@ namespace GeoIP.Server
         public void ConfigureServices(IServiceCollection services)
         {
             #region Caches, Compressions
-            services.AddResponseCompression(opts => opts.MimeTypes = ResponseCompressionDefaults
-                                                                    .MimeTypes.Concat(
-                                                                         new[] { "application/octet-stream" }))
-                    .AddResponseCaching();
+            services.AddResponseCompression(
+                         opts => 
+                             opts.MimeTypes = ResponseCompressionDefaults
+                                             .MimeTypes.Concat(new[] { "application/octet-stream" }))
+                    .AddResponseCaching()
+                    .AddMemoryCache();
+
             #endregion
 
 
             #region Commons
-            services.AddControllers()
+            services.AddControllers(o => o.Filters.Add<ValidateRequestAttribute>())
                     .AddNewtonsoftJson();
             #endregion
 
 
             #region Contexts
-            services.AddEntityFrameworkNpgsql()
-                    .AddDbContext<GeoIpDbContext>(
-                         options =>
-                         {
-                             options.UseNpgsql(
-                                 _configuration.GetConnectionString(@"Default"));
-                             options.EnableServiceProviderCaching();
+            services.AddDbContextPool<GeoIpDbContext>(
+                options =>
+                {
+                    options.UseNpgsql(
+                        _configuration.GetConnectionString(@"Default"));
+                    options.EnableServiceProviderCaching();
 
-                             #if DEBUG || SENSITIVE_DATA_LOGGING
-                             options.EnableSensitiveDataLogging();
-                             #endif
-                         });
+                    #if DEBUG || SENSITIVE_DATA_LOGGING
+                    options.EnableSensitiveDataLogging();
+                    #endif
+                });
             #endregion
+            
+            services.AddGeoIpProvider();
         }
 
 

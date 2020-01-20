@@ -1,0 +1,94 @@
+﻿#region HEADER
+//   GeoIpProvider.cs of GeoIP.Server
+//   Created by Nikita Neverov at 20.01.2020 10:02
+#endregion
+
+
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+using GeoIP.Server.Data;
+using GeoIP.Server.Helpers.Extensions;
+using GeoIP.Shared.Models;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+
+
+namespace GeoIP.Server.Services.DataProviders
+{
+    public sealed class GeoIpProvider : IGeoIpProvider
+    {
+        #pragma warning disable IDE0052
+
+
+        #region Fields
+        private static readonly Func<GeoIpDbContext, string, Blocks> GetAllInfoByIpFunc =
+            (db, ip) => db.Blocks
+                          .FromSqlRaw($"select * from geoipdb.public.blocks where '{ip}' <<= network")
+                          .Include(p => p.Location)
+                          .AsNoTracking()
+                          .First();
+
+        private readonly GeoIpDbContext _db;
+        private readonly IMemoryCache _cache;
+        private readonly ILogger<GeoIpProvider> _logger;
+        private readonly TimeSpan _dbCacheStorageDuration;
+        #endregion
+
+
+        #region Constructors
+        public GeoIpProvider
+        (
+            GeoIpDbContext context,
+            IMemoryCache memoryCache,
+            IConfiguration configuration,
+            ILogger<GeoIpProvider> logger
+        )
+        {
+            _db = context;
+            _cache = memoryCache;
+            _logger = logger;
+
+            _dbCacheStorageDuration = TimeSpan
+               .FromMinutes(configuration.GetCacheDurationByKey("DbCacheDurationMinutes", 5));
+        }
+        #endregion
+
+
+        #region Methods
+        public Blocks GetAllInfoByIp(string ip)
+        {
+            if (_cache.TryGetValue(ip, out Blocks block))
+            {
+                _logger.LogTrace("IP request loaded from cache");
+
+                goto Out;
+            }
+
+            block = GetAllInfoByIpFunc(_db, ip);
+
+            if (block != null)
+            {
+                _cache.Set(ip, block, new MemoryCacheEntryOptions().SetAbsoluteExpiration(_dbCacheStorageDuration));
+                _logger.LogTrace("IP request saved to cache");
+            }
+
+            Out:
+
+            return block;
+        }
+
+
+        public async Task<Blocks> GetAllInfoByIpAsync
+            (string ip) =>
+            await Task.Run(() => GetAllInfoByIp(ip)).ConfigureAwait(false);
+        #endregion _Methods
+
+
+        #pragma warning restore CA1823
+    }
+}
