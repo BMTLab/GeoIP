@@ -6,12 +6,12 @@
 <h1 xmlns="http://www.w3.org/1999/html">Get location by ip</h1>
 
 <input @bind="@_requestedIp" placeholder="Enter ip">
-<button @onclick="@GetInfoAsync">Check</button>
+<button class="btn btn-primary" @onclick="@GetInfoAsync">Check</button>
 <hr/>
 
 <p style="display: @_contentError">Error:  @_errorInfo</p>
 
-<div style="display: @_content">
+<div class="control" style="display: @_content">
     <p>Longitude:  @_responseInfo?.Longitude</p>
     <p>Latitude:  @_responseInfo?.Latitude</p>
     <p>Radius:  @_responseInfo?.AccuracyRadius</p>
@@ -21,15 +21,13 @@
     <p>City:  @_responseInfo?.Location.CityName</p>
     <p>Time zone:  @_responseInfo?.Location.TimeZone</p>
     <p>Postal Code:  @_responseInfo?.PostalCode</p>
-
-<p>Raw json:</p>
-<p>@_jsonString</p>
 </div>
 
-<hr/>
-<div><b>You can use api {domain}/api/geolocationbyip/{ip}</b></div>
-<br/>
-<div>Used ip address database: MaxMind GeoLite2</div>
+<div class="control" style="display: @_content">
+    <p>Raw json:</p>
+    <p style="word-wrap: break-word">@_jsonString</p>
+</div>
+
 
 @code {
     private string? _requestedIp;
