@@ -1,3 +1,5 @@
+ [![Build Status](https://travis-ci.com/BMTLab/GeoIP.svg?branch=master)](https://travis-ci.com/BMTLab/GeoIP)
+ 
  ![Recordit GIF](http://g.recordit.co/XEEVodvOsT.gif)
 
 # Geo IP
