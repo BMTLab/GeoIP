@@ -52,7 +52,7 @@ namespace GeoIP.Server.Controllers
 
             if (!IPAddress.TryParse(ip, out _))
             {
-                ModelState.AddModelError("Not recognized", "IP incorrect");
+                ModelState.AddModelError("Error", "IP incorrect");
 
                 goto Failed;
             }
@@ -65,14 +65,14 @@ namespace GeoIP.Server.Controllers
             {
                 _logger?.LogError(exc.Message);
 
-                ModelState.AddModelError("Exception", "Server error");
+                ModelState.AddModelError("Error", "Server error");
                 
                 goto Failed;
             }
             
             if (ipInfo is null)
             {
-                ModelState.AddModelError("Not found", "IP not found");
+                ModelState.AddModelError("Error", "IP not found");
                 
                 goto Failed;
             }
