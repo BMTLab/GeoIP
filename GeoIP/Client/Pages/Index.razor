@@ -1,4 +1,60 @@
 ﻿@page "/"
+@using GeoIP.Shared.Models
+@using Newtonsoft.Json
+@inject HttpClient Http
 
-<h1>Hello, world!</h1>
+<h1 xmlns="http://www.w3.org/1999/html">Get location by ip</h1>
 
+<input @bind="@_requestedIp" placeholder="Enter ip">
+<button @onclick="@GetInfoAsync">Check</button>
+<hr/>
+
+<p style="display: @_contentError">Error:  @_errorInfo</p>
+
+<div style="display: @_content">
+    <p>Longitude:  @_responseInfo?.Longitude</p>
+    <p>Latitude:  @_responseInfo?.Latitude</p>
+    <p>Radius:  @_responseInfo?.AccuracyRadius</p>
+    <p>Continent:  @_responseInfo?.Location.ContinentName</p>
+    <p>Country:  @_responseInfo?.Location.CountryName</p>
+    <p>ISO:  @_responseInfo?.Location.CountryIsoCode</p>
+    <p>City:  @_responseInfo?.Location.CityName</p>
+    <p>Time zone:  @_responseInfo?.Location.TimeZone</p>
+    <p>Postal Code:  @_responseInfo?.PostalCode</p>
+
+<p>Raw json:</p>
+<p>@_jsonString</p>
+</div>
+
+<hr/>
+<div><b>You can use api {domain}/api/geolocationbyip/{ip}</b></div>
+<br/>
+<div>Used ip address database: MaxMind GeoLite2</div>
+
+@code {
+    private string? _requestedIp;
+    private string? _errorInfo;
+    private string? _jsonString;
+    private Block? _responseInfo;
+    private string? _content = "block";
+    private string? _contentError = "none";
+
+    private async Task GetInfoAsync()
+    {
+        var response = await Http.GetAsync($"api/geolocationbyip/{_requestedIp}");
+        _jsonString = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            _responseInfo = JsonConvert.DeserializeObject<Block?>(_jsonString);
+            _content = "block";
+            _contentError = "none";
+        }
+        else
+        {
+            _errorInfo = _jsonString;
+            _content = "none";
+            _contentError = "block";
+        }
+    }
+}
