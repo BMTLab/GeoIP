@@ -70,6 +70,8 @@
     <Folder Include="Services\Extensions" />
   </ItemGroup>
 
+  <!-- Uncomment if an hostfix.dll file is missing when trying to run a dependency application-->
+  <!--
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="cd $(OutDir)&#xD;&#xA;copy $(ProjectName).runtimeconfig.json GeoIp.Updater.runtimeconfig.json" />
   </Target>
@@ -77,5 +79,6 @@
   <Target Name="PostPublish" AfterTargets="Publish">
     <Exec Command="cd $(PublishDir)&#xD;&#xA;copy $(ProjectName).runtimeconfig.json GeoIp.Updater.runtimeconfig.json" />
   </Target>
+  -->
 
 </Project>
