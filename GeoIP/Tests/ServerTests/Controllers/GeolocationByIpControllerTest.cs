@@ -82,7 +82,7 @@ namespace GeoIP.Tests.ServerTests.Controllers
             Assert.NotNull(jsonResult);
 
             var obj = (Block) jsonResult.Value;
-            Assert.Equal(FakeGeoIpProvider.TestBlock.Location.CityName, obj!.Location!.CityName);
+            Assert.Equal(FakeGeoIpProvider.TestBlock!.Location!.CityName, obj!.Location!.CityName);
             Assert.Equal((IPAddress.Parse(ip), 24), obj.Network);
 
             _output.WriteLine(JsonConvert.SerializeObject(obj));
