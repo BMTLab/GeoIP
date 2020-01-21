@@ -63,6 +63,8 @@ namespace GeoIP.Server.Controllers
             {
                 _logger.LogError(exc.Message);
                 
+                ModelState.AddModelError("Exception", "Server error");
+                
                 goto Falied;
             }
 
