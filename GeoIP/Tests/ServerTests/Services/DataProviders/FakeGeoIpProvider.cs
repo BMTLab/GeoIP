@@ -18,8 +18,8 @@ namespace GeoIP.Tests.ServerTests.Services.DataProviders
         #region Fields
         internal readonly Block? TestBlock;
         #endregion
-        
-        
+
+
         #region Constructors
         public FakeGeoIpProvider()
         {
@@ -55,14 +55,14 @@ namespace GeoIP.Tests.ServerTests.Services.DataProviders
             };
         }
         #endregion
-        
-        
+
+
         #region Methods
         public Block? GetAllInfoByIp(string ip)
         {
             if (ip == "0.0.0.0")
                 return null;
-            
+
             TestBlock.Network = (IPAddress.Parse(ip), 24);
 
             return TestBlock;

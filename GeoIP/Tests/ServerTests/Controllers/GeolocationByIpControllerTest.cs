@@ -30,10 +30,10 @@ namespace GeoIP.Tests.ServerTests.Controllers
         private readonly ITestOutputHelper _output;
         #endregion
         
+        
         #region Constructors
         static GeolocationByIpControllerTest() => GC.Collect();
-
-
+        
         public GeolocationByIpControllerTest(ITestOutputHelper output)
         {
             _output = output;
@@ -42,30 +42,6 @@ namespace GeoIP.Tests.ServerTests.Controllers
         
         
         #region Methods.Tests
-        
-        [Fact]
-        public async void GetReturnValidJsonDataWhenIpIsCorrect()
-        {
-            // Arrange
-            const string ip = "1.1.1.1";
-            var controller = new GeolocationByIpController(FakeTrackerProvider);
-
-            // Act
-            var result = await controller.GetAsync(ip);
-
-            // Assert
-            var actionResult = Assert.IsAssignableFrom<IActionResult>(result);
-            var jsonResult = Assert.IsType<JsonResult>(actionResult);
-            Assert.NotNull(jsonResult);
-            
-            var obj = (Block) jsonResult.Value;
-            Assert.Equal("Chicago", obj.Location.CityName);
-            Assert.Equal((IPAddress.Parse(ip), 24), obj.Network);
-            
-            _output.WriteLine(JsonConvert.SerializeObject(obj));
-        }
-
-
         [Theory]
         [InlineData("a.b.c.d", "0.0.0.0")]
         public async void GetReturnModelErrorWhenIpIsIncorrect(params string[] ipRequests)
@@ -88,7 +64,29 @@ namespace GeoIP.Tests.ServerTests.Controllers
                 _output.WriteLine(JsonConvert.SerializeObject(badResult));
             }
         }
-        
+
+
+        [Fact]
+        public async void GetReturnValidJsonDataWhenIpIsCorrect()
+        {
+            // Arrange
+            const string ip = "1.1.1.1";
+            var controller = new GeolocationByIpController(FakeTrackerProvider);
+
+            // Act
+            var result = await controller.GetAsync(ip);
+
+            // Assert
+            var actionResult = Assert.IsAssignableFrom<IActionResult>(result);
+            var jsonResult = Assert.IsType<JsonResult>(actionResult);
+            Assert.NotNull(jsonResult);
+
+            var obj = (Block) jsonResult.Value;
+            Assert.Equal("Chicago", obj.Location.CityName);
+            Assert.Equal((IPAddress.Parse(ip), 24), obj.Network);
+
+            _output.WriteLine(JsonConvert.SerializeObject(obj));
+        }
         #endregion
     }
 }
