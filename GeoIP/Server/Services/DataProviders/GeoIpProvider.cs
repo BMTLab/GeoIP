@@ -6,6 +6,7 @@
 
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 using GeoIP.Server.Data;
@@ -23,19 +24,18 @@ namespace GeoIP.Server.Services.DataProviders
     public sealed class GeoIpProvider : IGeoIpProvider
     {
         #pragma warning disable IDE0052
-
-
+        
         #region Fields
-        private static readonly Func<GeoIpDbContext, string, Block> GetAllInfoByIpFunc =
-            (db, ip) => db.Blocks
+        private static readonly Func<GeoIpDbContext, string, Block?> GetAllInfoByIpFunc =
+            (db, ip) => db?.Blocks
                           .FromSqlRaw($"select * from geoipdb.public.blocks where '{ip}' <<= network")
                           .Include(p => p.Location)
                           .AsNoTracking()
                           .FirstOrDefault();
 
         private readonly GeoIpDbContext _db;
-        private readonly IMemoryCache _cache;
-        private readonly ILogger<GeoIpProvider> _logger;
+        private readonly IMemoryCache? _cache;
+        private readonly ILogger<GeoIpProvider>? _logger;
         private readonly TimeSpan _dbCacheStorageDuration;
         #endregion
 
@@ -44,9 +44,9 @@ namespace GeoIP.Server.Services.DataProviders
         public GeoIpProvider
         (
             GeoIpDbContext context,
-            IMemoryCache memoryCache,
-            IConfiguration configuration,
-            ILogger<GeoIpProvider> logger
+            IMemoryCache? memoryCache = null,
+            IConfiguration? configuration = null,
+            ILogger<GeoIpProvider>? logger = null
         )
         {
             _db = context;
@@ -54,17 +54,19 @@ namespace GeoIP.Server.Services.DataProviders
             _logger = logger;
 
             _dbCacheStorageDuration = TimeSpan
-               .FromMinutes(configuration.GetCacheDurationByKey("DbCacheDurationMinutes", 5));
+               .FromMinutes(configuration?.GetCacheDurationByKey("DbCacheDurationMinutes", 5) 
+                            ?? 5);
         }
         #endregion
 
 
         #region Methods
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public Block? GetAllInfoByIp(string ip)
         {
-            if (_cache.TryGetValue(ip, out Block block))
+            if (_cache.TryGetValue(ip, out Block? block))
             {
-                _logger.LogTrace("IP request loaded from cache");
+                _logger?.LogTrace("IP request loaded from cache");
 
                 goto Out;
             }
@@ -73,8 +75,8 @@ namespace GeoIP.Server.Services.DataProviders
 
             if (block != null)
             {
-                _cache.Set(ip, block, new MemoryCacheEntryOptions().SetAbsoluteExpiration(_dbCacheStorageDuration));
-                _logger.LogTrace("IP request saved to cache");
+                _cache?.Set(ip, block, new MemoryCacheEntryOptions().SetAbsoluteExpiration(_dbCacheStorageDuration));
+                _logger?.LogTrace("IP request saved to cache");
             }
 
             Out:
@@ -83,8 +85,7 @@ namespace GeoIP.Server.Services.DataProviders
         }
 
 
-        public async Task<Block?> GetAllInfoByIpAsync
-            (string ip) =>
+        public async Task<Block?> GetAllInfoByIpAsync(string ip) =>
             await Task.Run(() => GetAllInfoByIp(ip)).ConfigureAwait(false);
         #endregion _Methods
 

@@ -22,7 +22,7 @@ namespace GeoIP.Server.Data
         #region Constructors
         public GeoIpDbContext
         (
-            DbContextOptions options = null
+            DbContextOptions? options = null
         ) : base(options)
         {
         }

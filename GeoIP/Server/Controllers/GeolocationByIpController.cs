@@ -6,6 +6,7 @@
 
 using System;
 using System.Net;
+using System.Threading.Tasks;
 
 using GeoIP.Server.Filters;
 using GeoIP.Server.Services.DataProviders;
@@ -24,7 +25,7 @@ namespace GeoIP.Server.Controllers
     {
         #region Fields
         private readonly IGeoIpProvider _provider;
-        private readonly ILogger<GeolocationByIpController> _logger;
+        private readonly ILogger<GeolocationByIpController>? _logger;
         #endregion
         
         
@@ -32,7 +33,7 @@ namespace GeoIP.Server.Controllers
         public GeolocationByIpController
         (
             IGeoIpProvider provider,
-            ILogger<GeolocationByIpController> logger
+            ILogger<GeolocationByIpController>? logger = null
         )
         {
             _provider = provider;
@@ -43,40 +44,43 @@ namespace GeoIP.Server.Controllers
         
         #region Methods.HTTP
         [HttpGet("{ip}")]
+        [ActionName("Get")]
         [ValidateRequest]
-        public IActionResult Get(string ip)
+        public async Task<IActionResult> GetAsync(string ip)
         {
-            Block ipInfo = null;
-            
+            Block? ipInfo = null;
+
             if (!IPAddress.TryParse(ip, out _))
             {
-                ModelState.AddModelError("Not recognized", "IP not recognized");
+                ModelState.AddModelError("Not recognized", "IP incorrect");
 
-                goto Falied;
+                goto Failed;
             }
 
             try
             {
-                ipInfo = _provider.GetAllInfoByIp(ip);
+                ipInfo = await _provider.GetAllInfoByIpAsync(ip).ConfigureAwait(false);
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc.Message);
-                
+                _logger?.LogError(exc.Message);
+
                 ModelState.AddModelError("Exception", "Server error");
                 
-                goto Falied;
+                goto Failed;
             }
-
+            
             if (ipInfo is null)
             {
-                ModelState.AddModelError("Not found", "IP not found or not correct");
+                ModelState.AddModelError("Not found", "IP not found");
+                
+                goto Failed;
             }
-            
+
             return new JsonResult(ipInfo);
             
-            Falied:
-            return BadRequest();
+            Failed:
+            return new BadRequestResult();
         }
         #endregion _Methods.HTTP
     }
