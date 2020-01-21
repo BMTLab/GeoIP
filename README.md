@@ -1,4 +1,4 @@
- <a href="https://github.com/BMTLab/GeoIP/blob/develop/GeoIP.Docs/Sample%20Images/client_main_view.png"><img src="https://github.com/BMTLab/GeoIP/blob/develop/GeoIP.Docs/Sample%20Images/client_main_view.png?raw=true" title="FVCproductions" alt="FVCproductions"></a>
+ ![Recordit GIF](http://g.recordit.co/XEEVodvOsT.gif)
 
 # Geo IP
 **Web service for providing geolocation by IPv4**
