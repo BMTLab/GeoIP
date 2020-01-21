@@ -63,7 +63,7 @@ namespace GeoIP.Tests.ServerTests.Services.DataProviders
             if (ip == "0.0.0.0")
                 return null;
 
-            TestBlock.Network = (IPAddress.Parse(ip), 24);
+            TestBlock!.Network = (IPAddress.Parse(ip), 24);
 
             return TestBlock;
         }

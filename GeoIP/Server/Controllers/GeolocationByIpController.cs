@@ -50,7 +50,7 @@ namespace GeoIP.Server.Controllers
         {
             Block? ipInfo = null;
 
-            if (!IPAddress.TryParse(ip, out _))
+            if (string.IsNullOrWhiteSpace(ip) || long.TryParse(ip, out _) || !IPAddress.TryParse(ip, out _))
             {
                 ModelState.AddModelError("Error", "IP incorrect");
 
