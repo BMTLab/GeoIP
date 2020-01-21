@@ -1,0 +1,10 @@
+language: csharp
+sudo: required
+dist: trusty
+mono: none
+dotnet: 3.1.101
+before_script:
+  - dotnet restore
+script:
+  - dotnet build GeoIP.sln -c Release
+  - dotnet test GeoIP.sln
