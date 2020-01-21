@@ -132,7 +132,7 @@ namespace GeoIP.Updater
         private static async Task UpdateDatabaseAsync(string connString, string csvDirPath, string updateScriptsPath)
         {
             var sql = await File.ReadAllTextAsync(updateScriptsPath);
-            sql = sql.Replace(":p", @$"'{csvDirPath}\GeoLite2-City-Locations-ru.csv'");
+            sql = sql.Replace(":p", @$"'{csvDirPath}\GeoLite2-City-Locations-en.csv'");
             sql = sql.Replace(":v", @$"'{csvDirPath}\GeoLite2-City-Blocks-IPv4.csv'");
 
             await using var conn = new NpgsqlConnection(connString);

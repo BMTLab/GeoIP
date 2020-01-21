@@ -9,7 +9,7 @@
 <button class="btn btn-primary" @onclick="@GetInfoAsync">Check</button>
 <hr/>
 
-<p style="display: @_contentError">Error:  @_errorInfo</p>
+<p style="display: @_contentError">@_errorInfo</p>
 
 <div class="control" style="display: @_content">
     <p>Longitude:  @_responseInfo?.Longitude</p>
@@ -39,6 +39,9 @@
 
     private async Task GetInfoAsync()
     {
+        if (string.IsNullOrWhiteSpace(_requestedIp))
+            return;
+        
         var response = await Http.GetAsync($"api/geolocationbyip/{_requestedIp}");
         _jsonString = await response.Content.ReadAsStringAsync();
 

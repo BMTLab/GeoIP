@@ -61,6 +61,9 @@ namespace GeoIP.Server.Services.DataProviders
 
 
         #region Methods
+        /// <summary>
+        /// Returns all database fields for this ip
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public Block? GetAllInfoByIp(string ip)
         {
@@ -83,8 +86,10 @@ namespace GeoIP.Server.Services.DataProviders
 
             return block;
         }
-
-
+        
+        /// <summary>
+        /// Asynchronous version of 'GetAllInfoByIp'
+        /// </summary>
         public async Task<Block?> GetAllInfoByIpAsync(string ip) =>
             await Task.Run(() => GetAllInfoByIp(ip)).ConfigureAwait(false);
         #endregion _Methods

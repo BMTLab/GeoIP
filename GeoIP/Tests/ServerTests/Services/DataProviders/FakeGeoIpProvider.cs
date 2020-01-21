@@ -16,12 +16,12 @@ namespace GeoIP.Tests.ServerTests.Services.DataProviders
     public sealed class FakeGeoIpProvider : IGeoIpProvider
     {
         #region Fields
-        internal readonly Block? TestBlock;
+        internal static readonly Block? TestBlock;
         #endregion
 
 
         #region Constructors
-        public FakeGeoIpProvider()
+        static FakeGeoIpProvider()
         {
             TestBlock = new Block
             {
@@ -60,6 +60,7 @@ namespace GeoIP.Tests.ServerTests.Services.DataProviders
         #region Methods
         public Block? GetAllInfoByIp(string ip)
         {
+            /* To simulate the 'not found' state */
             if (ip == "0.0.0.0")
                 return null;
 

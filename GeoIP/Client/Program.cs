@@ -11,10 +11,10 @@ namespace GeoIP.Client
 {
     public static class Program
     {
-        public static void Main(string[] args) => CreateHostBuilder(args).Build().Run();
+        public static void Main() => CreateHostBuilder().Build().Run();
 
 
-        private static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
+        private static IWebAssemblyHostBuilder CreateHostBuilder() =>
             BlazorWebAssemblyHost.CreateDefaultBuilder()
                                  .UseBlazorStartup<Startup>();
     }

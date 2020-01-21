@@ -10,7 +10,10 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace GeoIP.Server.Filters
 {
-    public class ValidateRequestAttribute : ActionFilterAttribute
+    /// <summary>
+    /// ActionFilter. Intercepts model errors and returns bad result with information
+    /// </summary>
+    public sealed class ValidateRequestAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuted(ActionExecutedContext context)
         {

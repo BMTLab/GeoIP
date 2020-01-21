@@ -13,6 +13,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace GeoIP.Server.Data
 {
+    /// <summary>
+    /// Serves to work EF Core tools,
+    /// eliminating the need to have an empty public constructor in the DbContext class
+    /// </summary>
+    /// <remarks>
+    /// The presence of an empty constructor does not allow the use of DbContextPool
+    /// </remarks>
     public sealed class GeoIpDbContextFactory : IDesignTimeDbContextFactory<GeoIpDbContext>
     {
         public GeoIpDbContext CreateDbContext(string[] args)

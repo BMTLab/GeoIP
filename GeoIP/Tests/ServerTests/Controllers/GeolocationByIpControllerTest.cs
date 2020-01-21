@@ -26,7 +26,7 @@ namespace GeoIP.Tests.ServerTests.Controllers
     public sealed class GeolocationByIpControllerTest
     {
         #region Fields
-        private static readonly IGeoIpProvider FakeTrackerProvider = new FakeGeoIpProvider();
+        private static readonly IGeoIpProvider FakeProvider = new FakeGeoIpProvider();
         private readonly ITestOutputHelper _output;
         #endregion
         
@@ -43,11 +43,11 @@ namespace GeoIP.Tests.ServerTests.Controllers
         
         #region Methods.Tests
         [Theory]
-        [InlineData("a.b.c.d", "0.0.0.0", "42")]
+        [InlineData("a.b.c.d", "0.0.0.0", "42", "")]
         public async void GetReturnModelErrorWhenIpIsIncorrect(params string[] ipRequests)
         {
             // Arrange
-            var controller = new GeolocationByIpController(FakeTrackerProvider);
+            var controller = new GeolocationByIpController(FakeProvider);
 
             // Act
             foreach (var ip in ipRequests)
@@ -71,7 +71,7 @@ namespace GeoIP.Tests.ServerTests.Controllers
         {
             // Arrange
             const string ip = "1.1.1.1";
-            var controller = new GeolocationByIpController(FakeTrackerProvider);
+            var controller = new GeolocationByIpController(FakeProvider);
 
             // Act
             var result = await controller.GetAsync(ip);
@@ -82,7 +82,7 @@ namespace GeoIP.Tests.ServerTests.Controllers
             Assert.NotNull(jsonResult);
 
             var obj = (Block) jsonResult.Value;
-            Assert.Equal("Chicago", obj!.Location!.CityName);
+            Assert.Equal(FakeGeoIpProvider.TestBlock.Location.CityName, obj!.Location!.CityName);
             Assert.Equal((IPAddress.Parse(ip), 24), obj.Network);
 
             _output.WriteLine(JsonConvert.SerializeObject(obj));

@@ -43,6 +43,11 @@ namespace GeoIP.Server.Controllers
         
         
         #region Methods.HTTP
+        /// <summary>
+        /// HTTP GET: GeolocationByIp/Get
+        /// </summary>
+        /// <param name="ip">Requested ip</param>
+        /// <returns>JSON</returns>
         [HttpGet("{ip}")]
         [ActionName("Get")]
         [ValidateRequest]

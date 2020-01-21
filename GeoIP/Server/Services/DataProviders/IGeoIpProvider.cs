@@ -13,9 +13,7 @@ namespace GeoIP.Server.Services.DataProviders
 {
     public interface IGeoIpProvider
     {
-        #region Methods
         Block? GetAllInfoByIp(string ip);
         Task<Block?> GetAllInfoByIpAsync(string ip);
-        #endregion
     }
 }
