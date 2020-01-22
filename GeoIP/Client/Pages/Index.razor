@@ -30,13 +30,18 @@
 
 
 @code {
+    #pragma warning disable 649
+    
     private string? _requestedIp;
     private string? _errorInfo;
     private string? _jsonString;
     private Block? _responseInfo;
     private string? _content = "block";
     private string? _contentError = "none";
+    
+    #pragma warning restore 649
 
+    
     private async Task GetInfoAsync()
     {
         if (string.IsNullOrWhiteSpace(_requestedIp))
