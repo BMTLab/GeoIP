@@ -20,14 +20,14 @@ namespace GeoIP.Shared.Models
         [IgnoreDataMember]
         public ValueTuple<IPAddress, int> Network { get; set; }
         public int GeonameId { get; set; }
-        public int RegisteredCountryGeonameId { get; set; }
-        public int RepresentedCountryGeonameId { get; set; }
-        public bool IsAnonymousProxy { get; set; }
-        public bool IsSatelliteProvider { get; set; }
+        public int? RegisteredCountryGeonameId { get; set; }
+        public int? RepresentedCountryGeonameId { get; set; }
+        public bool? IsAnonymousProxy { get; set; }
+        public bool? IsSatelliteProvider { get; set; }
         public string? PostalCode { get; set; }
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
-        public short AccuracyRadius { get; set; }
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
+        public short? AccuracyRadius { get; set; }
 
         [ForeignKey("GeonameId")]
         public virtual Location? Location { get; set; }

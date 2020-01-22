@@ -17,7 +17,6 @@ namespace GeoIP.Shared.Models
     {
         [Key]
         public int GeonameId { get; set; }
-
         public string? LocaleCode { get; set; }
         public string? ContinentCode { get; set; }
         public string? ContinentName { get; set; }
@@ -28,9 +27,9 @@ namespace GeoIP.Shared.Models
         public string? Subdivision2IsoCode { get; set; }
         public string? Subdivision2Name { get; set; }
         public string? CityName { get; set; }
-        public short MetroCode { get; set; }
+        public short? MetroCode { get; set; }
         public string? TimeZone { get; set; }
-        public bool IsInEuropeanUnion { get; set; }
+        public bool? IsInEuropeanUnion { get; set; }
 
         [IgnoreDataMember]
         public virtual ICollection<Block>? Blocks { get; set; }
