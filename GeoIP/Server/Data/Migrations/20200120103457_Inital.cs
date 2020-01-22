@@ -1,6 +1,6 @@
 ﻿#region HEADER
 //   20200120103457_Inital.cs of GeoIP.Server
-//   Created by Nikita Neverov at 20.01.2020 13:34
+//   Created by Nikita Neverov at 21.01.2020 22:36
 #endregion
 
 

@@ -1,8 +1,11 @@
 ﻿#region HEADER
 //   Program.cs of GeoIP.Updater
-//   Created by Nikita Neverov at 20.01.2020 8:11
+//   Created by Nikita Neverov at 21.01.2020 22:36
 #endregion
 
+
+// Simplified implementation of the database update task.
+// Should be replaced in the future with a parser of command line arguments
 
 using System;
 using System.IO;
@@ -37,6 +40,7 @@ namespace GeoIP.Updater
 
             UpdateFileName = @"geolitedb.zip";
             UpdateScriptPath = @"Scripts\geoipdb_update.sql";
+            IndexScriptPath = @"Scripts\geoipdb_index.sql";
         }
         #endregion
 
@@ -45,6 +49,7 @@ namespace GeoIP.Updater
         private static readonly string ApiUrl;
         private static readonly string UpdateFileName;
         private static readonly string UpdateScriptPath;
+        private static readonly string IndexScriptPath;
         private static readonly string ConnectionString;
         #endregion
 
@@ -129,29 +134,48 @@ namespace GeoIP.Updater
         }
 
 
+        /// <summary>
+        ///     Loading update and index script, that copy and index data to db
+        /// </summary>
+        /// <param name="connString"></param>
+        /// <param name="csvDirPath"></param>
+        /// <param name="updateScriptsPath"></param>
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         private static async Task UpdateDatabaseAsync(string connString, string csvDirPath, string updateScriptsPath)
         {
-            var sql = await File.ReadAllTextAsync(updateScriptsPath);
-            sql = sql.Replace(":p", @$"'{csvDirPath}\GeoLite2-City-Locations-en.csv'");
-            sql = sql.Replace(":v", @$"'{csvDirPath}\GeoLite2-City-Blocks-IPv4.csv'");
-
             await using var conn = new NpgsqlConnection(connString);
-            await using var cmd = new NpgsqlCommand(sql, conn);
-
-            await conn.OpenAsync().ConfigureAwait(false);
             OnNextMessage("Connection opened");
 
-            await cmd.PrepareAsync().ConfigureAwait(false);
+            /* Load script to copy data to db */
+            var sqlUpdate = await File.ReadAllTextAsync(updateScriptsPath).ConfigureAwait(false);
+            sqlUpdate = sqlUpdate.Replace(":p", @$"'{csvDirPath}\GeoLite2-City-Locations-en.csv'");
+            sqlUpdate = sqlUpdate.Replace(":v", @$"'{csvDirPath}\GeoLite2-City-Blocks-IPv4.csv'");
+
+            /* Load script to index db */
+            var sqlIndex = await File.ReadAllTextAsync(IndexScriptPath).ConfigureAwait(false);
+
+            await using var cmdUpdate = new NpgsqlCommand(sqlUpdate, conn);
+            await using var cmdIndex = new NpgsqlCommand(sqlIndex, conn);
+
+            await conn.OpenAsync().ConfigureAwait(false);
+
+            await cmdUpdate.PrepareAsync().ConfigureAwait(false);
+            await cmdUpdate.PrepareAsync().ConfigureAwait(false);
 
             OnNextMessage("Data prepared \r\n" +
                           "There is an update. \r\n" +
                           "The operation may take a long time. \r\n" +
                           "Do not turn off the program");
 
-            await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+            await cmdUpdate.ExecuteNonQueryAsync().ConfigureAwait(false);
+            await cmdIndex.ExecuteNonQueryAsync().ConfigureAwait(false);
         }
 
 
+        /// <summary>
+        ///     Log stub method
+        /// </summary>
+        /// <param name="status"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void OnNextMessage(string status) => Console.WriteLine(status);
         #endregion _Methods

@@ -6,6 +6,8 @@
 
 using System.IO;
 
+using JetBrains.Annotations;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +22,7 @@ namespace GeoIP.Server.Data
     /// <remarks>
     /// The presence of an empty constructor does not allow the use of DbContextPool
     /// </remarks>
+    [UsedImplicitly]
     public sealed class GeoIpDbContextFactory : IDesignTimeDbContextFactory<GeoIpDbContext>
     {
         public GeoIpDbContext CreateDbContext(string[] args)
