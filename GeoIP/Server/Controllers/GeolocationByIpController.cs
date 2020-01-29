@@ -5,12 +5,14 @@
 
 
 using System;
-using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using GeoIP.Server.Filters;
+using Fody;
+
 using GeoIP.Server.Services.DataProviders;
 using GeoIP.Shared.Models;
+using GeoIP.Shared.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -21,6 +23,7 @@ namespace GeoIP.Server.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
+    [ConfigureAwait(false)]
     public sealed class GeolocationByIpController : ControllerBase
     {
         #region Fields
@@ -47,45 +50,39 @@ namespace GeoIP.Server.Controllers
         /// HTTP GET: GeolocationByIp/Get
         /// </summary>
         /// <param name="ip">Requested ip</param>
+        /// <see href="http://localhost/api/geolocationbyip"/>
         /// <returns>JSON</returns>
         [HttpGet("{ip}")]
         [ActionName("Get")]
-        [ValidateRequest]
+        //[ValidateRequest]
         public async Task<IActionResult> GetAsync(string ip)
         {
             Block? ipInfo = null;
+            
+            const string ipPattern = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
 
-            if (string.IsNullOrWhiteSpace(ip) || long.TryParse(ip, out _) || !IPAddress.TryParse(ip, out _))
+            if (string.IsNullOrWhiteSpace(ip) || !Regex.IsMatch(ip, ipPattern))
             {
-                ModelState.AddModelError("Error", "IP incorrect");
-
-                goto Failed;
+                return BadRequest(new RequestResult { Successful = false, Error = @"Invalid Ip" });
             }
 
             try
             {
-                ipInfo = await _provider.GetAllInfoByIpAsync(ip).ConfigureAwait(false);
+                ipInfo = await _provider.GetAllInfoByIpAsync(ip);
             }
             catch (Exception exc)
             {
                 _logger?.LogError(exc.Message);
-
-                ModelState.AddModelError("Error", "Server error");
                 
-                goto Failed;
+                return BadRequest(new RequestResult { Successful = false, Error = @"Server error" });
             }
             
             if (ipInfo is null)
             {
-                ModelState.AddModelError("Error", "IP not found");
-                
-                goto Failed;
+                return BadRequest(new RequestResult { Successful = false, Error = @"Ip not found" });
             }
 
-            return new JsonResult(ipInfo);
-            
-            Failed:
-            return new BadRequestResult();
+            return Ok(ipInfo);
         }
         #endregion _Methods.HTTP
     }

@@ -14,8 +14,7 @@ namespace GeoIP.Server.Services.Extensions
     public static class ServiceProviderExtensions
     {
         #region Methods
-        public static IServiceCollection AddGeoIpProvider
-            (this IServiceCollection services) =>
+        public static IServiceCollection AddGeoIpProvider(this IServiceCollection services) =>
             services.AddScoped<IGeoIpProvider, GeoIpProvider>();
         #endregion
     }

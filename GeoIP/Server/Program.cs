@@ -8,6 +8,8 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
+using Fody;
+
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +23,7 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace GeoIP.Server
 {
+    [ConfigureAwait(false)]
     public static class Program
     {
         public static async Task Main(string[] args)

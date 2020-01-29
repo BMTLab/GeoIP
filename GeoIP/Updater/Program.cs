@@ -15,6 +15,8 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
+using Fody;
+
 using Microsoft.Extensions.Configuration;
 
 using Npgsql;
@@ -22,8 +24,18 @@ using Npgsql;
 
 namespace GeoIP.Updater
 {
+    [ConfigureAwait(false)]
     public static class Program
     {
+        #region Fields
+        private static readonly string ApiUrl;
+        private static readonly string UpdateFileName;
+        private static readonly string UpdateScriptPath;
+        private static readonly string IndexScriptPath;
+        private static readonly string ConnectionString;
+        #endregion
+        
+        
         #region Constructors
         static Program()
         {
@@ -43,16 +55,7 @@ namespace GeoIP.Updater
             IndexScriptPath = @"Scripts\geoipdb_index.sql";
         }
         #endregion
-
-
-        #region Fields
-        private static readonly string ApiUrl;
-        private static readonly string UpdateFileName;
-        private static readonly string UpdateScriptPath;
-        private static readonly string IndexScriptPath;
-        private static readonly string ConnectionString;
-        #endregion
-
+        
 
         #region Methods
         public static async Task Main(string[] args)
@@ -66,7 +69,7 @@ namespace GeoIP.Updater
 
                 try
                 {
-                    await DownloadCsvAsync(ApiUrl, updateDirInfo.FullName, UpdateFileName).ConfigureAwait(false);
+                    await DownloadCsvAsync(ApiUrl, updateDirInfo.FullName, UpdateFileName);
                 }
                 catch (WebException exc)
                 {
@@ -80,7 +83,7 @@ namespace GeoIP.Updater
 
                 try
                 {
-                    await UpdateDatabaseAsync(ConnectionString, extractDirPath, UpdateScriptPath).ConfigureAwait(false);
+                    await UpdateDatabaseAsync(ConnectionString, extractDirPath, UpdateScriptPath);
                 }
                 catch (NpgsqlException exc)
                 {
@@ -106,17 +109,17 @@ namespace GeoIP.Updater
 
             Loader.DownloadResultHandler += async (_, e) =>
             {
-                await Task.Delay(500).ConfigureAwait(false);
+                await Task.Delay(500);
                 Console.WriteLine(e.Error is null || !e.Cancelled ? "Completed" : "Error");
             };
 
             Loader.DownloadProgressHandler += async (_, e) =>
             {
-                await Task.Delay(5000).ConfigureAwait(false);
+                await Task.Delay(5000);
                 Console.WriteLine($"{e.ProgressPercentage}% \t {e.BytesReceived}/{e.TotalBytesToReceive}");
             };
 
-            await Loader.LoadAsync(url, dirPath + fileName).ConfigureAwait(false);
+            await Loader.LoadAsync(url, dirPath + fileName);
         }
 
 
@@ -147,28 +150,28 @@ namespace GeoIP.Updater
             OnNextMessage("Connection opened");
 
             /* Load script to copy data to db */
-            var sqlUpdate = await File.ReadAllTextAsync(updateScriptsPath).ConfigureAwait(false);
+            var sqlUpdate = await File.ReadAllTextAsync(updateScriptsPath);
             sqlUpdate = sqlUpdate.Replace(":p", @$"'{csvDirPath}\GeoLite2-City-Locations-en.csv'");
             sqlUpdate = sqlUpdate.Replace(":v", @$"'{csvDirPath}\GeoLite2-City-Blocks-IPv4.csv'");
 
             /* Load script to index db */
-            var sqlIndex = await File.ReadAllTextAsync(IndexScriptPath).ConfigureAwait(false);
+            var sqlIndex = await File.ReadAllTextAsync(IndexScriptPath);
 
             await using var cmdUpdate = new NpgsqlCommand(sqlUpdate, conn);
             await using var cmdIndex = new NpgsqlCommand(sqlIndex, conn);
 
-            await conn.OpenAsync().ConfigureAwait(false);
+            await conn.OpenAsync();
 
-            await cmdUpdate.PrepareAsync().ConfigureAwait(false);
-            await cmdUpdate.PrepareAsync().ConfigureAwait(false);
+            await cmdUpdate.PrepareAsync();
+            await cmdIndex.PrepareAsync();
 
             OnNextMessage("Data prepared \r\n" +
                           "There is an update. \r\n" +
                           "The operation may take a long time. \r\n" +
                           "Do not turn off the program");
 
-            await cmdUpdate.ExecuteNonQueryAsync().ConfigureAwait(false);
-            await cmdIndex.ExecuteNonQueryAsync().ConfigureAwait(false);
+            await cmdUpdate.ExecuteNonQueryAsync();
+            await cmdIndex.ExecuteNonQueryAsync();
         }
 
 

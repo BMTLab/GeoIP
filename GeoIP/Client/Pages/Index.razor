@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using GeoIP.Shared.Models
+@using GeoIP.Shared.ViewModels
 @using Newtonsoft.Json
 @inject HttpClient Http
 
@@ -9,7 +10,9 @@
 <button class="btn btn-primary" @onclick="@GetInfoAsync">Check</button>
 <hr/>
 
-<p style="display: @_contentError">@_errorInfo</p>
+<div class="alert alert-danger" role="alert" style="display: @_contentError">
+    <b>@_errorInfo</b>
+</div>
 
 <div class="control" style="display: @_content">
     <p>Longitude:  @_responseInfo?.Longitude</p>
@@ -30,7 +33,7 @@
 
 
 @code {
-    #pragma warning disable 649
+#pragma warning disable 649
     
     private string? _requestedIp;
     private string? _errorInfo;
@@ -39,7 +42,7 @@
     private string? _content = "block";
     private string? _contentError = "none";
     
-    #pragma warning restore 649
+#pragma warning restore 649
 
     
     private async Task GetInfoAsync()
@@ -58,7 +61,7 @@
         }
         else
         {
-            _errorInfo = _jsonString;
+            _errorInfo = JsonConvert.DeserializeObject<RequestResult>(_jsonString).Error;
             _content = "none";
             _contentError = "block";
         }

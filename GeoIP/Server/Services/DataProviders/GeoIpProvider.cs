@@ -9,6 +9,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
+using Fody;
+
 using GeoIP.Server.Data;
 using GeoIP.Server.Helpers.Extensions;
 using GeoIP.Shared.Models;
@@ -21,6 +23,7 @@ using Microsoft.Extensions.Logging;
 
 namespace GeoIP.Server.Services.DataProviders
 {
+    [ConfigureAwait(false)]
     public sealed class GeoIpProvider : IGeoIpProvider
     {
         #pragma warning disable IDE0052
@@ -28,7 +31,7 @@ namespace GeoIP.Server.Services.DataProviders
         #region Fields
         private static readonly Func<GeoIpDbContext, string, Block?> GetAllInfoByIpFunc =
             (db, ip) => db?.Blocks
-                          .FromSqlRaw($"select * from geoipdb.public.blocks where '{ip}' <<= network")
+                          .FromSqlRaw($"select * from geoipdb.public.blocks where '{ip}' <<= network limit 1")
                           .Include(p => p.Location)
                           .AsNoTracking()
                           .FirstOrDefault();
@@ -79,6 +82,7 @@ namespace GeoIP.Server.Services.DataProviders
             if (block != null)
             {
                 _cache?.Set(ip, block, new MemoryCacheEntryOptions().SetAbsoluteExpiration(_dbCacheStorageDuration));
+                
                 _logger?.LogTrace("IP request saved to cache");
             }
 
@@ -86,12 +90,14 @@ namespace GeoIP.Server.Services.DataProviders
 
             return block;
         }
-        
+
+
         /// <summary>
         /// Asynchronous version of 'GetAllInfoByIp'
         /// </summary>
-        public async Task<Block?> GetAllInfoByIpAsync(string ip) =>
-            await Task.Run(() => GetAllInfoByIp(ip)).ConfigureAwait(false);
+        public async Task<Block?> GetAllInfoByIpAsync(string ip) => 
+            await Task.Run(() => GetAllInfoByIp(ip));
+        
         #endregion _Methods
 
 

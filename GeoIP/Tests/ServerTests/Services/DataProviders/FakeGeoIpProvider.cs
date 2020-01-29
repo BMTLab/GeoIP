@@ -7,12 +7,15 @@
 using System.Net;
 using System.Threading.Tasks;
 
+using Fody;
+
 using GeoIP.Server.Services.DataProviders;
 using GeoIP.Shared.Models;
 
 
 namespace GeoIP.Tests.ServerTests.Services.DataProviders
 {
+    [ConfigureAwait(false)]
     public sealed class FakeGeoIpProvider : IGeoIpProvider
     {
         #region Fields
@@ -70,8 +73,7 @@ namespace GeoIP.Tests.ServerTests.Services.DataProviders
         }
 
 
-        public async Task<Block?> GetAllInfoByIpAsync(string ip) =>
-            await Task.Run(() => GetAllInfoByIp(ip)).ConfigureAwait(false);
+        public async Task<Block?> GetAllInfoByIpAsync(string ip) => await Task.Run(() => GetAllInfoByIp(ip));
         #endregion
     }
 }

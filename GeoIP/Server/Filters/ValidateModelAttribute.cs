@@ -4,6 +4,10 @@
 #endregion
 
 
+using System;
+
+using JetBrains.Annotations;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -13,6 +17,8 @@ namespace GeoIP.Server.Filters
     /// <summary>
     /// ActionFilter. Intercepts model errors and returns bad result with information
     /// </summary>
+    [UsedImplicitly]
+    [Obsolete]
     public sealed class ValidateRequestAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuted(ActionExecutedContext context)

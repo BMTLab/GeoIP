@@ -8,9 +8,12 @@ using System.ComponentModel;
 using System.Net;
 using System.Threading.Tasks;
 
+using Fody;
+
 
 namespace GeoIP.Updater
 {
+    [ConfigureAwait(false)]
     public static class Loader
     {
         #region Fields.Handlers
@@ -22,7 +25,7 @@ namespace GeoIP.Updater
         #region Methods
         public static async Task LoadAsync(string sourceUrl, string destinationPath)
         {
-            var webClient = new WebClient();
+            using var webClient = new WebClient();
 
             webClient.DownloadFileCompleted += DownloadResultHandler;
             webClient.DownloadProgressChanged += DownloadProgressHandler;

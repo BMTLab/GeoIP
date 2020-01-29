@@ -5,7 +5,11 @@
 
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net;
+
+using Fody;
 
 using GeoIP.Server.Controllers;
 using GeoIP.Server.Services.DataProviders;
@@ -13,7 +17,6 @@ using GeoIP.Shared.Models;
 using GeoIP.Tests.ServerTests.Services.DataProviders;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Newtonsoft.Json;
 
@@ -23,6 +26,7 @@ using Xunit.Abstractions;
 
 namespace GeoIP.Tests.ServerTests.Controllers
 {
+    [ConfigureAwait(false)]
     public sealed class GeolocationByIpControllerTest
     {
         #region Fields
@@ -32,42 +36,18 @@ namespace GeoIP.Tests.ServerTests.Controllers
         
         
         #region Constructors
-        static GeolocationByIpControllerTest() => GC.Collect();
+        static GeolocationByIpControllerTest() => 
+            GC.Collect();
         
-        public GeolocationByIpControllerTest(ITestOutputHelper output)
-        {
+        public GeolocationByIpControllerTest(ITestOutputHelper output) => 
             _output = output;
-        }
         #endregion
         
         
         #region Methods.Tests
-        [Theory]
-        [InlineData("a.b.c.d", "0.0.0.0", "42", "")]
-        public async void GetReturnModelErrorWhenIpIsIncorrect(params string[] ipRequests)
-        {
-            // Arrange
-            var controller = new GeolocationByIpController(FakeProvider);
-
-            // Act
-            foreach (var ip in ipRequests)
-            {
-                var result = await controller.GetAsync(ip);
-
-                // Assert
-                var actionResult = Assert.IsAssignableFrom<IActionResult>(result);
-                var badResult = Assert.IsType<BadRequestResult>(actionResult);
-                Assert.NotNull(badResult);
-                Assert.Equal(400, badResult.StatusCode);
-                Assert.Equal(ModelValidationState.Invalid, controller.ModelState.ValidationState);
-
-                _output.WriteLine(JsonConvert.SerializeObject(badResult));
-            }
-        }
-
 
         [Fact]
-        public async void GetReturnValidJsonDataWhenIpIsCorrect()
+        public async void GetAsync_ReturnValidJsonDataWhenIpIsCorrect()
         {
             // Arrange
             const string ip = "1.1.1.1";
@@ -78,14 +58,61 @@ namespace GeoIP.Tests.ServerTests.Controllers
 
             // Assert
             var actionResult = Assert.IsAssignableFrom<IActionResult>(result);
-            var jsonResult = Assert.IsType<JsonResult>(actionResult);
+            var jsonResult = Assert.IsType<OkObjectResult>(actionResult);
             Assert.NotNull(jsonResult);
 
-            var obj = (Block) jsonResult.Value;
+            var obj = Assert.IsType<Block>(jsonResult.Value);
             Assert.Equal(FakeGeoIpProvider.TestBlock!.Location!.CityName, obj!.Location!.CityName);
             Assert.Equal((IPAddress.Parse(ip), 24), obj.Network);
 
             _output.WriteLine(JsonConvert.SerializeObject(obj));
+        }
+        
+        
+        [Theory]
+        [ClassData(typeof(IncorrectIpTestData))]
+        public async void GetAsync_ReturnModelErrorWhenIpIsIncorrect(string ipTest)
+        {
+            // Arrange
+            var controller = new GeolocationByIpController(FakeProvider);
+
+            // Act
+            var result = await controller.GetAsync(ipTest);
+
+            // Assert
+            var actionResult = Assert.IsAssignableFrom<IActionResult>(result);
+            var badResult = Assert.IsType<BadRequestObjectResult>(actionResult);
+            Assert.NotNull(badResult);
+            Assert.Equal(400, badResult.StatusCode);
+
+            _output.WriteLine(JsonConvert.SerializeObject(badResult));
+        }
+        #endregion _Methods.Tests
+        
+        
+        #region Methods.DataGenerators
+        private sealed class IncorrectIpTestData : IEnumerable<object[]>
+        {
+            public IEnumerator<object[]> GetEnumerator()
+            {
+                yield return new object[] { null! };
+                yield return new object[] { "" };
+                yield return new object[] { "  " };
+                yield return new object[] { "..." };
+                yield return new object[] { " . . . " };
+                yield return new object[] { "20.20.20." };
+                yield return new object[] { ".20.20.10" };
+                yield return new object[] { "a.b.c.d" };
+                yield return new object[] { "1.2.3.d" };
+                yield return new object[] { "2967453" };
+                yield return new object[] { "2.4.6" };
+                yield return new object[] { "256.1.2.4" };
+                yield return new object[] { "1.1.2.256" };
+                yield return new object[] { "1.2.4.6:80" };
+            }
+
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
         #endregion
     }

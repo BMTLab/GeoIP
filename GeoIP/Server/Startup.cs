@@ -48,7 +48,9 @@ namespace GeoIP.Server
 
 
             #region Commons
+            #pragma warning disable 612
             services.AddControllers(o => o.Filters.Add<ValidateRequestAttribute>())
+                     #pragma warning restore 612
                     .AddNewtonsoftJson();
             #endregion
 
@@ -81,19 +83,19 @@ namespace GeoIP.Server
             
             app.UseResponseCompression()
                .UseResponseCaching();
-            
+
             app.UseStaticFiles(new StaticFileOptions
             {
                 OnPrepareResponse = ctx =>
                     ctx.Context.Response.Headers.Add("Cache-Control", "public,max-age=1200")
-            })
-               .UseClientSideBlazorFiles<Client.Startup>();
+            });
+            app.UseClientSideBlazorFiles<Client.Program>();
 
             app.UseRouting()
                .UseEndpoints(endpoints =>
                 {
                     endpoints.MapDefaultControllerRoute();
-                    endpoints.MapFallbackToClientSideBlazor<Client.Startup>("index.html");
+                    endpoints.MapFallbackToClientSideBlazor<Client.Program>(@"index.html");
                 });
         }
         #endregion

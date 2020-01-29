@@ -4,18 +4,21 @@
 #endregion
 
 
+using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Blazor.Hosting;
 
 
 namespace GeoIP.Client
 {
-    public static class Program
+    public class Program
     {
-        public static void Main() => CreateHostBuilder().Build().Run();
+        public static async Task Main()
+        {
+            var builder = WebAssemblyHostBuilder.CreateDefault();
+            builder.RootComponents.Add<App>(@"app");
 
-
-        private static IWebAssemblyHostBuilder CreateHostBuilder() =>
-            BlazorWebAssemblyHost.CreateDefaultBuilder()
-                                 .UseBlazorStartup<Startup>();
+            await builder.Build().RunAsync();
+        }
     }
 }

@@ -11,6 +11,8 @@ using System.IO;
 
 using GeoIP.Shared.Models;
 
+using JetBrains.Annotations;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -31,6 +33,8 @@ namespace GeoIP.Server.Data
 
         #region Properties.DbSets
         public DbSet<Block>? Blocks { get; set; }
+        
+        [UsedImplicitly]
         public DbSet<Location>? Locations { get; set; }
         #endregion
 
