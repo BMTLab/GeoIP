@@ -11,8 +11,7 @@ using Shared.Models;
 
 namespace Server.Services.Repositories;
 
-
-public sealed class GeoIpRepository : BaseRepository
+public class GeoIpRepository : BaseRepository, IGeoIpRepository
 {
     private readonly IGeoIpProvider _provider;
     private readonly IMemoryCache _cache;

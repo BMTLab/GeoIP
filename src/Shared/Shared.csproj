@@ -7,11 +7,6 @@
         <Configurations>Debug;Release</Configurations>
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
-
-    <ItemGroup>
-        <SupportedPlatform Include="browser" />
-        <RuntimeHostConfigurationOption Include="System.Globalization.Invariant" Value="true" />
-    </ItemGroup>
     
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <ErrorReport>send</ErrorReport>

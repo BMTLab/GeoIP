@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 using Server.Controllers;
-using Server.Services.Repositories;
+using Server.Services.Repositories.Abstractions;
 using Server.Services.Repositories.StateModels;
 
 using Shared.Models;
@@ -20,12 +20,12 @@ using Xunit.Abstractions;
 namespace GeoIp.Tests.Controllers.GeoIp;
 
 
-public sealed partial class GeoIpControllerTests
+public partial class GeoIpControllerTests
 {
     #region Fields
     private static readonly List<string> StoredNetworks = new() { "33.33.33.33" };
 
-    private readonly Mock<GeoIpRepository> _geoIpRepositoryMock;
+    private readonly Mock<IGeoIpRepository> _geoIpRepositoryMock;
     private readonly ILocalization _localization;
     private readonly ITestOutputHelper _output;
     #endregion
@@ -35,7 +35,7 @@ public sealed partial class GeoIpControllerTests
     public GeoIpControllerTests(ITestOutputHelper output)
     {
         // Init mocks
-        _geoIpRepositoryMock = new Mock<GeoIpRepository>();
+        _geoIpRepositoryMock = new Mock<IGeoIpRepository>();
         _localization = new LocalizationEn();
         
         // Setup mocks

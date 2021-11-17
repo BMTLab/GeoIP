@@ -24,6 +24,7 @@ using Server.Services.BackgroundWorkers;
 using Server.Services.Providers.Ef;
 using Server.Services.Providers.Ef.Abstractions;
 using Server.Services.Repositories;
+using Server.Services.Repositories.Abstractions;
 using Server.Settings;
 
 using Shared.Constants;
@@ -217,7 +218,7 @@ public sealed class Startup
 
 
         #region Repositories
-        services.AddScoped<GeoIpRepository>();
+        services.AddScoped<IGeoIpRepository, GeoIpRepository>();
         #endregion _Repositories
         
         services.AddHostedService<UpdateDbBackgroundService>();

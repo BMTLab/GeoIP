@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Server.Controllers.Abstractions;
 using Server.Models.Constants;
-using Server.Services.Repositories;
+using Server.Services.Repositories.Abstractions;
 
 using Shared.Models;
 using Shared.ViewModels;
@@ -22,13 +22,13 @@ namespace Server.Controllers;
 [SuppressMessage("ReSharper", "UnusedParameter.Local")]
 public sealed class GeoIpController : CustomControllerBase<GeoIpController>
 {
-    private readonly GeoIpRepository _geoIpRepository;
+    private readonly IGeoIpRepository _geoIpRepository;
 
 
     #region Ctors
     public GeoIpController
     (
-        GeoIpRepository geoIpRepository,
+        IGeoIpRepository geoIpRepository,
         ILocalization localization,
         ILogger<GeoIpController>? logger = null
     ) : base(localization, logger)

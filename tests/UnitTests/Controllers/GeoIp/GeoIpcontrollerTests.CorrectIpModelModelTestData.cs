@@ -5,7 +5,7 @@ using Shared.ViewModels;
 
 namespace GeoIp.Tests.Controllers.GeoIp;
 
-public sealed partial class GeoIpControllerTests
+public partial class GeoIpControllerTests
 {
     #region DataGenerators
     private sealed class CorrectIpModelModelTestData : IEnumerable<object[]>
