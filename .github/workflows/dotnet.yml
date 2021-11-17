@@ -70,7 +70,7 @@ jobs:
         run: |
           cd build
           ls -a
-          zip -r -9 GeoIP.zip weld.bmtlab.net
+          zip -r -9 GeoIP.zip geoip.net
           cd ${{ github.workspace }}
           echo ::set-output name=exit_code::$?
         shell:
