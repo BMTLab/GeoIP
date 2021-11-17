@@ -1,12 +1,5 @@
 {
   "profiles": {
-    "Front": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "http://localhost:5004",
-      "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
-    },
     "Back": {
       "commandName": "Project",
       "dotnetRunMessages": true,
