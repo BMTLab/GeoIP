@@ -1,0 +1,4 @@
+### Get By IP
+GET {{host}}/api/geoip/Get?ip=78.132.136.98
+Accept-Language: en
+Content-Type: application/json

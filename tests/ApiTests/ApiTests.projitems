@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>A042528E-4023-400D-A846-2A0C027C8FFC</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>ApiTests</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)api_geoip.http" />
+    <Content Include="$(MSBuildThisFileDirectory)api_server.http" />
+    <Content Include="$(MSBuildThisFileDirectory)http-client.env.json" />
+    <Content Include="$(MSBuildThisFileDirectory)http-client.private.env.json" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,114 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+# VisualStudioVersion = 16.10
+# MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ApiTests", "tests\ApiTests\ApiTests.shproj", "{F73AF995-347E-4D4B-9C34-65430ABB05EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{5ECDEED6-67FF-41A7-91DA-49EC45ACD4DA}"
+ProjectSection(SolutionItems) = preProject
+	scripts\publish.sh = scripts\publish.sh
+	scripts\clean.sh = scripts\clean.sh
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E3BAC71B-609D-48BF-892B-4E663990375F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1DC5C84C-204B-42E2-8C5A-0313CF42AAC4}"
+	ProjectSection(SolutionItems) = preProject
+
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{9D5A93C6-66AB-4DB6-BBE6-B6530527EBCD}"
+ProjectSection(SolutionItems) = preProject
+	README.md = README.md
+	docs\todo.txt = docs\todo.txt
+	Common.Build.props = Common.Build.props
+	Common.Build.targets = Common.Build.targets
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflow", "workflow", "{64D9EAA4-E321-41C9-990B-93879317A3F6}"
+ProjectSection(SolutionItems) = preProject
+	.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configs", "configs", "{91F913A8-349E-46C3-AFFB-4EAEFF6FEF0A}"
+ProjectSection(SolutionItems) = preProject
+	.editorconfig = .editorconfig
+	NuGet.config = NuGet.config
+	global.json = global.json
+	.config\dotnet-tools.json = .config\dotnet-tools.json
+	.gitignore = .gitignore
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{0EE7D68C-3FBE-47A2-B8BF-BBD0E9400A8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "src\Server\Server.csproj", "{8473AA53-856F-431F-A5D9-02F32260D538}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localization", "src\Localization\Localization.csproj", "{2228B8D8-715C-4F71-B9F1-80A25C9036B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "src\Shared\Shared.csproj", "{0BBF3925-1A43-4C70-A47F-F5A3A820DDDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog.GeoIP", "src\Extensions\NLog.GeoIP\NLog.GeoIP.csproj", "{0BEB1014-9E1F-4898-8600-C007463A6606}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLoader", "src\DataLoader\DataLoader.csproj", "{728537B8-1C04-4401-80B1-20C4034E7B7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Context", "src\Context\Context.csproj", "{E1F4AB48-6268-4428-A6F2-DCF7CD370621}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{131DAEDD-4B94-474A-804E-F3C6C0080C75}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8473AA53-856F-431F-A5D9-02F32260D538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8473AA53-856F-431F-A5D9-02F32260D538}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8473AA53-856F-431F-A5D9-02F32260D538}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8473AA53-856F-431F-A5D9-02F32260D538}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2228B8D8-715C-4F71-B9F1-80A25C9036B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2228B8D8-715C-4F71-B9F1-80A25C9036B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2228B8D8-715C-4F71-B9F1-80A25C9036B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2228B8D8-715C-4F71-B9F1-80A25C9036B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BBF3925-1A43-4C70-A47F-F5A3A820DDDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BBF3925-1A43-4C70-A47F-F5A3A820DDDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BBF3925-1A43-4C70-A47F-F5A3A820DDDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BBF3925-1A43-4C70-A47F-F5A3A820DDDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BEB1014-9E1F-4898-8600-C007463A6606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BEB1014-9E1F-4898-8600-C007463A6606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BEB1014-9E1F-4898-8600-C007463A6606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BEB1014-9E1F-4898-8600-C007463A6606}.Release|Any CPU.Build.0 = Release|Any CPU
+		{728537B8-1C04-4401-80B1-20C4034E7B7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{728537B8-1C04-4401-80B1-20C4034E7B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{728537B8-1C04-4401-80B1-20C4034E7B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{728537B8-1C04-4401-80B1-20C4034E7B7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1F4AB48-6268-4428-A6F2-DCF7CD370621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1F4AB48-6268-4428-A6F2-DCF7CD370621}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1F4AB48-6268-4428-A6F2-DCF7CD370621}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1F4AB48-6268-4428-A6F2-DCF7CD370621}.Release|Any CPU.Build.0 = Release|Any CPU
+		{131DAEDD-4B94-474A-804E-F3C6C0080C75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{131DAEDD-4B94-474A-804E-F3C6C0080C75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{131DAEDD-4B94-474A-804E-F3C6C0080C75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{131DAEDD-4B94-474A-804E-F3C6C0080C75}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8340E4FA-96DE-4E2B-A808-C9F5ECEC1593}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F73AF995-347E-4D4B-9C34-65430ABB05EE} = {1DC5C84C-204B-42E2-8C5A-0313CF42AAC4}
+		{64D9EAA4-E321-41C9-990B-93879317A3F6} = {5ECDEED6-67FF-41A7-91DA-49EC45ACD4DA}
+		{0EE7D68C-3FBE-47A2-B8BF-BBD0E9400A8A} = {E3BAC71B-609D-48BF-892B-4E663990375F}
+		{8473AA53-856F-431F-A5D9-02F32260D538} = {E3BAC71B-609D-48BF-892B-4E663990375F}
+		{2228B8D8-715C-4F71-B9F1-80A25C9036B0} = {E3BAC71B-609D-48BF-892B-4E663990375F}
+		{0BBF3925-1A43-4C70-A47F-F5A3A820DDDD} = {E3BAC71B-609D-48BF-892B-4E663990375F}
+		{0BEB1014-9E1F-4898-8600-C007463A6606} = {0EE7D68C-3FBE-47A2-B8BF-BBD0E9400A8A}
+		{728537B8-1C04-4401-80B1-20C4034E7B7D} = {E3BAC71B-609D-48BF-892B-4E663990375F}
+		{E1F4AB48-6268-4428-A6F2-DCF7CD370621} = {E3BAC71B-609D-48BF-892B-4E663990375F}
+		{131DAEDD-4B94-474A-804E-F3C6C0080C75} = {1DC5C84C-204B-42E2-8C5A-0313CF42AAC4}
+	EndGlobalSection
+	GlobalSection(RiderSharedRunConfigurations) = postSolution
+		File = .run\Server.run.xml
+	EndGlobalSection
+EndGlobal

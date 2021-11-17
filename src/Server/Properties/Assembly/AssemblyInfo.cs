@@ -1,0 +1,19 @@
+﻿using System.Reflection;
+using System.Runtime.InteropServices;
+
+[assembly: AssemblyFileVersion("1.0")]
+[assembly: AssemblyTitle("Geo IP")]
+[assembly: AssemblyProduct("Geo IP")]
+[assembly: AssemblyMetadata("Default OS", "Ubuntu20.04-x64")]
+[assembly: AssemblyDelaySign(false)]
+[assembly: AssemblyVersion("1.0.0.*")]
+[assembly: AssemblyInformationalVersion("1.0")]
+[assembly: AssemblyDescription("Geo IP (Server)")]
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#elif STAGING
+[assembly: AssemblyConfiguration("Staging")]
+#elif RELEASE
+[assembly: AssemblyConfiguration("Release")]
+#endif
+[assembly: ComVisible(false)]

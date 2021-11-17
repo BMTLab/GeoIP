@@ -1,0 +1,12 @@
+<Project>
+
+    <Target Name="ToolRestore" BeforeTargets="PreBuildEvent">
+        <Message Importance="High" Text="Restoring tools" />
+        <Exec Command="dotnet tool restore" StandardOutputImportance="High" />
+    </Target>
+    
+    <Target Name="StartBuild" BeforeTargets="Build">
+        <Message Importance="High" Text="$(AssemblyName) is building" />
+    </Target>
+
+</Project>

@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../../Common.Build.props" />
+    
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <ErrorReport>send</ErrorReport>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <DebugType>full</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <Optimize>false</Optimize>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <ErrorReport>none</ErrorReport>
+        <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+        <Optimize>true</Optimize>
+
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <PublishReadyToRunComposite>true</PublishReadyToRunComposite>
+        <PublishSingleFile>true</PublishSingleFile>
+
+        <!--Try trim-->
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>copyused</TrimMode>
+        <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <Configurations>Debug;Release</Configurations>
+      <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Npgsql" Version="6.0.0" />
+    </ItemGroup>
+    
+    <ItemGroup Label="Fody">
+        <PackageReference Include="Fody" Version="6.6.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="NullGuard.Fody" Version="3.0.0">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Scripts\geoipdb_update.sql" />
+        <EmbeddedResource Include="Scripts\geoipdb_index.sql" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Context\Context.csproj" />
+      <ProjectReference Include="..\Shared\Shared.csproj" />
+    </ItemGroup>
+
+</Project>

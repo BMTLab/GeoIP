@@ -1,0 +1,10 @@
+### Head
+HEAD {{host}}/api/server/Test
+Accept-Language: en
+Content-Type: application/json
+
+
+### Get Info
+GET {{host}}/api/server/GetInfo
+Accept-Language: en
+Content-Type: application/json

@@ -1,0 +1,167 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#
+    var resourceFile = XDocument.Load(Host.ResolvePath(@"Resources/LocalizationResources.xml"));
+#>
+/* 
+    This file was generated automatically, do not make changes to it manually
+*/
+<#
+    var list1 = resourceFile.Elements().Elements(XName.Get(@"s")).ToList();
+    var translations = new Dictionary<string, Dictionary<string, string>>(list1.Count);
+
+    list1.ForEach
+        (
+            node =>
+            {
+                var str1 = node.Attribute(XName.Get(@"key"))?.Value;
+
+                if (str1 == null)
+                    throw new ArgumentNullException(nameof(node));
+
+                var list2 = node.Nodes().ToList();
+                var keyTranslations = new Dictionary<string, string>(list2.Count);
+
+                list2.ForEach
+                    (
+                        local =>
+                        {
+                            var key2 = local is XElement xelement ? xelement.Name.ToString() : null;
+                            if (key2 == null)
+                                throw new ArgumentNullException(nameof(local));
+
+                            var str2 = ((XElement) local).Value;
+                            keyTranslations.Add(key2, str2);
+                        });
+                translations.Add(str1, keyTranslations);
+            });
+
+    var dictionary1 = new Dictionary<string, Dictionary<string, string>>();
+    foreach (var keyValuePair1 in translations)
+    {
+        foreach (var keyValuePair2 in keyValuePair1.Value)
+        {
+            var key = keyValuePair2.Key;
+            var str = keyValuePair2.Value;
+            if (!dictionary1.ContainsKey(key))
+            {
+                dictionary1.Add
+                    (
+                        key,
+                        new Dictionary<string, string>
+                        {
+                            { keyValuePair1.Key, str }
+                        });
+            }
+            else
+            {
+                dictionary1[key].Add(keyValuePair1.Key, str);
+            }
+        }
+    }
+#>
+
+using Localization.Attributes;
+
+
+// ReSharper disable All
+namespace Localization
+{
+    public interface ILocalization
+    {
+        public string Lang { get; }
+<#
+    foreach (var keyValuePair1 in dictionary1.Values.First())
+    {
+#>
+        /// <summary> 
+<#
+        foreach (var keyValuePair2 in dictionary1)
+        {
+            var desc = $@"{keyValuePair2.Key}: {(keyValuePair2.Value.ContainsKey(keyValuePair1.Key) ? keyValuePair2.Value[keyValuePair1.Key] : string.Empty)}";
+#>
+        /// <para> <#
+            Write(desc);
+#> </para>
+<#
+        }
+#>        /// </summary>
+       public string <#
+        Write(ToCamelCase(keyValuePair1.Key));
+#> { get; } 
+       
+<#
+    }
+#>
+    }
+<#
+    foreach (var keyValuePair1 in dictionary1)
+    {
+#>
+    
+    [Language(@"<#
+        Write(keyValuePair1.Key);
+#>")]
+    public sealed class Localization<#
+        Write(ToCamelCase(keyValuePair1.Key));
+#> : ILocalization
+    {
+        public string Lang => string.Intern(@"<#
+        Write(keyValuePair1.Key);
+#>");
+
+<#
+        foreach (var keyValuePair2 in keyValuePair1.Value)
+        {
+#>
+        public string <#
+            Write(ToCamelCase(keyValuePair2.Key));
+#> { get; } = "<#
+            Write(keyValuePair2.Value);
+#>";
+<#
+        }
+#>
+    }
+<#
+    }
+#>
+}
+
+<#+
+    private static string ToCamelCase(in string input)
+    {
+        var s = input;
+
+        if (s.StartsWith(@"lc_"))
+        {
+            s = s.Substring(3);
+        }
+
+        var b = s[0].ToString().ToUpper();
+        for (var i = 1; i < s.Length; i++)
+        {
+            if (s[i] == '_' && i < s.Length - 1)
+            {
+                ++i;
+                b += s[i].ToString().ToUpper();
+            }
+            else
+            {
+                b += s[i];
+            }
+        }
+
+        return b;
+    }
+
+
+    /*private static string TrimEmpty(in string input) =>
+        input.TrimStart().TrimEnd();*/
+#>

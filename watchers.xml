@@ -1,0 +1,62 @@
+<TaskOptions>
+  <TaskOptions>
+    <option name="arguments" value="t4 $FileName$" />
+    <option name="checkSyntaxErrors" value="true" />
+    <option name="description" />
+    <option name="exitCodeBehavior" value="ERROR" />
+    <option name="fileExtension" value="tt" />
+    <option name="immediateSync" value="true" />
+    <option name="name" value="T4" />
+    <option name="output" value="" />
+    <option name="outputFilters">
+      <array />
+    </option>
+    <option name="outputFromStdout" value="false" />
+    <option name="program" value="dotnet" />
+    <option name="runOnExternalChanges" value="true" />
+    <option name="scopeName" value="Current File" />
+    <option name="trackOnlyRoot" value="false" />
+    <option name="workingDir" value="$FileDir$" />
+    <envs />
+  </TaskOptions>
+  <TaskOptions>
+    <option name="arguments" value="t4 ../LocalizationGenerator.tt" />
+    <option name="checkSyntaxErrors" value="true" />
+    <option name="description" />
+    <option name="exitCodeBehavior" value="ERROR" />
+    <option name="fileExtension" value="xml" />
+    <option name="immediateSync" value="true" />
+    <option name="name" value="Localization xml" />
+    <option name="output" value="" />
+    <option name="outputFilters">
+      <array />
+    </option>
+    <option name="outputFromStdout" value="false" />
+    <option name="program" value="dotnet" />
+    <option name="runOnExternalChanges" value="true" />
+    <option name="scopeName" value="Current File" />
+    <option name="trackOnlyRoot" value="false" />
+    <option name="workingDir" value="" />
+    <envs />
+  </TaskOptions>
+  <TaskOptions>
+    <option name="arguments" value="webcompiler wwwroot/css/$FileName$ -c webcompiler.json" />
+    <option name="checkSyntaxErrors" value="true" />
+    <option name="description" />
+    <option name="exitCodeBehavior" value="ERROR" />
+    <option name="fileExtension" value="scss" />
+    <option name="immediateSync" value="true" />
+    <option name="name" value="SCSS" />
+    <option name="output" value="" />
+    <option name="outputFilters">
+      <array />
+    </option>
+    <option name="outputFromStdout" value="false" />
+    <option name="program" value="dotnet" />
+    <option name="runOnExternalChanges" value="true" />
+    <option name="scopeName" value="Current File" />
+    <option name="trackOnlyRoot" value="true" />
+    <option name="workingDir" value="$SolutionDir$/src/Monitor/Client" />
+    <envs />
+  </TaskOptions>
+</TaskOptions>

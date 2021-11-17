@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s>
+    <s key="error">
+        <en>Error</en>
+        <ru>Ошибка</ru>
+    </s>
+    <s key="error_internal">
+        <en>Internal error</en>
+        <ru>Внутреняя ошибка</ru>
+    </s>
+    <s key="error_lost_connection">
+        <en>Lost connection</en>
+        <ru>Потеряно соединение</ru>
+    </s>
+    <s key="error_ip_is_not_correct">
+        <en>IP is not correct</en>
+        <ru>IP не корректный</ru>
+    </s>
+    <s key="error_not_found_location">
+        <en>Location not found</en>
+        <ru>Не найдено местоположение</ru>
+    </s>
+    <s key="lc_hello">
+        <en>Hello</en>
+        <ru>Привет</ru>
+    </s>
+</s>

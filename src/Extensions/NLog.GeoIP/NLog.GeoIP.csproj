@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../../../Common.Build.props" />
+
+    <PropertyGroup>
+        <ErrorReport>none</ErrorReport>
+        <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+        <Optimize>true</Optimize>
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>link</TrimMode>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
+      <PackageReference Include="NLog" Version="5.0.0-preview.3" />
+    </ItemGroup>
+
+</Project>
