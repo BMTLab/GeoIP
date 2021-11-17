@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -52,17 +52,17 @@ jobs:
         shell:
           bash
         
-      - name: Publish Staging
-        id: publish-staging
-        if: steps.test.outputs.exit_code == 0
-        run: |
-          cd scripts
-          chmod +x ./publish.sh
-          ./publish.sh -c Staging -d build/dev.geoip.net
-          cd ${{ github.workspace }}
-          echo ::set-output name=exit_code::$?
-        shell:
-          bash
+#       - name: Publish Staging
+#         id: publish-staging
+#         if: steps.test.outputs.exit_code == 0
+#         run: |
+#           cd scripts
+#           chmod +x ./publish.sh
+#           ./publish.sh -c Staging -d build/dev.geoip.net
+#           cd ${{ github.workspace }}
+#           echo ::set-output name=exit_code::$?
+#         shell:
+#           bash
 
       - name: Pack
         id: pack
@@ -71,7 +71,6 @@ jobs:
           cd build
           ls -a
           zip -r -9 GeoIP.zip weld.bmtlab.net
-          zip -r -9 GeoIP-Dev.zip dev.geoip.net
           cd ${{ github.workspace }}
           echo ::set-output name=exit_code::$?
         shell:
@@ -116,13 +115,13 @@ jobs:
           asset_name: GeoIP.zip
           asset_content_type: application/zip
           
-      - name: Upload Staging Asset
-        if: steps.create_release.outputs.exit_code == 0
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/build/GeoIP-Dev.zip
-          asset_name: GeoIP-Dev.zip
-          asset_content_type: application/zip 
+#       - name: Upload Staging Asset
+#         if: steps.create_release.outputs.exit_code == 0
+#         uses: actions/upload-release-asset@v1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           upload_url: ${{ steps.create_release.outputs.upload_url }}
+#           asset_path: ${{ github.workspace }}/build/GeoIP-Dev.zip
+#           asset_name: GeoIP-Dev.zip
+#           asset_content_type: application/zip 
