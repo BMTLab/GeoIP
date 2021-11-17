@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyVersion("1.0.1.*")]
 [assembly: AssemblyInformationalVersion("1.0")]
-[assembly: AssemblyDescription("Geo IP (Server)")]
+[assembly: AssemblyDescription("Geo IP (Data Loader)")]
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
 #elif RELEASE

@@ -6,13 +6,11 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Welding Server")]
 [assembly: AssemblyMetadata("Default OS", "Ubuntu20.04-x64")]
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyVersion("1.0.0.*")]
+[assembly: AssemblyVersion("1.0.1.*")]
 [assembly: AssemblyInformationalVersion("1.0")]
-[assembly: AssemblyDescription("Shared")]
+[assembly: AssemblyDescription("Geo IP (Shared)")]
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
-#elif STAGING
-[assembly: AssemblyConfiguration("Staging")]
 #elif RELEASE
 [assembly: AssemblyConfiguration("Release")]
 #endif
